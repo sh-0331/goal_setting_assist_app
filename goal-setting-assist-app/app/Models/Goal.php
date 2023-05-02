@@ -12,4 +12,7 @@ class Goal extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+    public function solutions() {
+        return $this->hasMany(Solution::class, 'goals_id');
+    }
 }

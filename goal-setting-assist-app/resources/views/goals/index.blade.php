@@ -34,10 +34,11 @@
             @foreach ($goals as $goal)
             <div class="container border bg-light">
                 <a href="{{ route('goals.show', compact('goal')) }}" class="fs-4">{{ $goal->goal_content }}</a>
-                <!-- foreach ($goal->solutions as $solution) -->
+                @if($goal->solutions != NULL)
+                @foreach ($goal->solutions as $solution)
                 <div class="border mt-1 mb-1">
-                    <!-- <p class="m-2 fst-italic fs-5">{ $solution->content }}</p> -->
-                    <p class="m-2 fst-italic fs-5">Solution-1</p>
+                    <p class="m-2 fst-italic fs-5">{{ $solution->content }}</p>
+                    <!-- <p class="m-2 fst-italic fs-5">Solution-1</p> -->
                     <div class="row m-0">
                         <div class="col-9 d-block mt-2">
                             <div class="progress" style="height: 20px;">
@@ -52,7 +53,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- endforeach -->
+                @endforeach
+                @endif
             </div>
             @endforeach
         </div>
