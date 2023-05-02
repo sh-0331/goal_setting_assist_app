@@ -5,14 +5,15 @@
                 <h5 class="modal-title" id="addSolutionModalLabel">Solution追加</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="#" method="post">
+            <form action="{{ route('goals.solutions.store', compact('goal')) }}" method="post">
+                @csrf
                 <div class="modal-body">
                     <!-- 解決策の入力 -->
                     <label for="solution_content" class="form-label">解決策を入力してください。</label>
-                    <input type="text" class="form-control" name="solution_content">
+                    <input type="text" class="form-control" id="solution_content" name="content">
                     <!-- 解決策の評価 -->
                     <label for="solution_eval" class="form-label">解決策を5段階で評価してみましょう。</label>
-                    <select class="form-select" name="goal_eval" name="solution_eval">
+                    <select class="form-select" id="solution_eval" name="eval">
                         <option value="5">5</option>
                         <option value="4">4</option>
                         <option value="3">3</option>
