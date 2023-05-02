@@ -16,10 +16,9 @@
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
 </head>
-<body>
+<body class="d-flex flex-column">
     <div id="app">
         @include('layouts.header')
-
         <main class="py-4">
             @yield('content')
         </main>

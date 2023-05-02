@@ -38,13 +38,13 @@ class GoalController extends Controller
     public function store(Request $request)
     {
         $goal = new Goal();
-        $goal->user_id = Auth::user();
+        $goal->user_id = Auth::id();
         $goal->classification = $request->input('classification');
         $goal->goal_content = $request->input('goal_content');
         $goal->merit = $request->input('merit');
         $goal->eval = $request->input('eval');
         // $goal->done;
-        $goal->start_content = $request->input('$start_content');
+        $goal->start_content = $request->input('start_content');
         $goal->save();
 
         return redirect()->route('goals.index')->with('flash_message', "登録が完了しました。");
