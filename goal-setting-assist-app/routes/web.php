@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [GoalController::class, 'index']);
+Route::get('/', [GoalController::class, 'index'])->middleware('auth');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('/goals', GoalController::class);
+Route::resource('/goals', GoalController::class)->middleware('auth');
