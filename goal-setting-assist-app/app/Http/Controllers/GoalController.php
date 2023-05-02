@@ -69,7 +69,7 @@ class GoalController extends Controller
      */
     public function edit(Goal $goal)
     {
-        return view('goals.create', compact('goal'));
+        return view('goals.edit', compact('goal'));
     }
 
     /**
@@ -87,10 +87,10 @@ class GoalController extends Controller
         $goal->merit = $request->input('merit');
         $goal->eval = $request->input('eval');
         // $goal->done;
-        $goal->start_content = $request->input('$start_content');
+        $goal->start_content = $request->input('start_content');
         $goal->save();
 
-        return redirect()->route('goals.index')->with('flash_message', "編集が完了しました。");
+        return redirect()->route('goals.show', compact('goal'))->with('flash_message', "編集が完了しました。");
     }
 
     /**

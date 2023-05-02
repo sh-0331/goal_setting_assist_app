@@ -5,6 +5,11 @@
     <a href="{{ route('goals.index') }}">ホーム</a>
     <p>&gt;Goal詳細</p>
 </div>
+@if(session('flash_message'))
+    <div class="flash_message bg-success text-center py-3 mb-1">
+        {{ session('flash_message') }}
+    </div>
+@endif
 
 <div class="container">
     <!-- Solution用Modal -->
@@ -27,7 +32,11 @@
                     <a href="#" class="px-1 fs-3 link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
                         <li><a href="{{ route('goals.edit', compact('goal')) }}" class="dropdown-item">編集</a></li>
-                        <li><a href="{{ route('goals.destroy', compact('goal')) }}" class="dropdown-item text-danger">削除</a></li>
+                        <form action="{{ route('goals.destroy', compact('goal')) }}" method="post">
+                            @method('DELETE')
+                            @csrf
+                            <li><button type="submit" class="dropdown-item text-danger" name="delete">削除</button></li>
+                        </form>
                     </ul>
                 </div>
             </div>

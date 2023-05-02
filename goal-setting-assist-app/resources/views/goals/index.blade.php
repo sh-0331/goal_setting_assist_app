@@ -5,6 +5,12 @@
     <a href="{{ route('goals.index') }}">ホーム</a>
 </div>
 
+@if(session('flash_message'))
+    <div class="flash_message bg-success text-center py-3 mb-1">
+        {{ session('flash_message') }}
+    </div>
+@endif
+
 <div class="container">
     <div class="container bg-light mb-1">
         <div class="d-flex justify-content-end">
