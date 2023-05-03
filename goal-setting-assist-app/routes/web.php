@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\GoalSolutionController;
+use App\Http\Controllers\GoalSolutionMilestoneController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -24,8 +25,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('/goals', GoalController::class)->middleware('auth');
 
-Route::resource('goals.solutions', GoalSolutionController::class);
+Route::resource('goals.solutions', GoalSolutionController::class)->middleware('auth');
 
-Route::post('goals/{goal}/solutions/{solution}', [GoalSolutionController::class, 'measurable_store'])->name('measurable.store');
+Route::post('goals/{goal}/solutions/{solution}', [GoalSolutionController::class, 'measurable_store'])->name('measurable.store')->middleware('auth');
+Route::put('goals/{goal}/solutions/{solution}', [GoalSolutionController::class, 'measurable_update'])->name('measurable.update')->middleware('auth');
 
-Route::put('goals/{goal}/solutions/{solution}', [GoalSolutionController::class, 'measurable_update'])->name('measurable.update');
+Route::post('goals/{goal}/solutions/{solution}/milestone', [GoalSolutionMilestoneController::class, 'store'])->name('milestones.store')->middleware('auth');
+Route::put('goals/{goal}/solutions/{solution}/milestone/{milestone}', [GoalSolutionMilestoneController::class, 'update'])->name('milestones.update')->middleware('auth');
+Route::delete('goals/{goal}/solutions/{solution}/milestone/{milestone}', [GoalSolutionMilestoneController::class, 'destroy'])->name('milestones.destroy')->middleware('auth');
