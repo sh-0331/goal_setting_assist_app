@@ -8,6 +8,7 @@ use App\Models\Milestone;
 use App\Models\Solution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class GoalSolutionController extends Controller
 {
@@ -40,10 +41,25 @@ class GoalSolutionController extends Controller
         $total_date = 0;
         $solution_id = $solution->id;
         $milestones = Milestone::where('solution_id', $solution_id)->get();
+        // マイルストーンが存在する場合
         if($milestones != [] ){
+            // 未完了の中でrankが最大の更新日付を取得
+            $max_rank = $milestones->where('done', 0)->max('rank');
+            $latest = $milestones->where('rank', $max_rank)[1];
+            $latest_date = new DateTime($latest->value('updated_at'));
+            // 今日の日付を取得
+            $today = new DateTime('now');
+            // 今日と更新日付の日にち差を計算する
+            $diff = $latest_date->diff($today);
+            $diff_day = $diff->format('%a');
+            // 日にちの差をdateから引き、保存する
+            $latest->date = $latest->date - $diff_day;
+            $latest->save();
+
+            // 最終的なdateの合計値を返す
             $total_date = $milestones->pluck('date')->sum();
         }
-        // dd($total_date);
+
         return view('goals.solutions.show', compact('goal', 'solution', 'milestones', 'total_date'));
     }
 
