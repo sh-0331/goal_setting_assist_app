@@ -25,3 +25,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('/goals', GoalController::class)->middleware('auth');
 
 Route::resource('goals.solutions', GoalSolutionController::class);
+
+Route::post('goals/{goal}/solutions/{solution}', [GoalSolutionController::class, 'measurable_store'])->name('measurable.store');

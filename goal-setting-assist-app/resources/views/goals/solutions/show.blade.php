@@ -58,12 +58,16 @@
                 </div>
 
                 <div class="col">
-                    <p class="m-0"><span class="fw-bold">目標：</span>例）1件</p>
+                    @if($solution->measurable != NULL)
+                    <p class="m-0"><span class="fw-bold">目標：</span>{{$solution->measurable->progress_value}}{{$solution->measurable->progress_unit}}</p>
+                    @endif
                 </div>
 
                 <div class="col">
+                    @if($solution->milestone != NULL)
                     <!-- 納期はマイルストーンの合計 -->
-                    <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">18</span>日</p>
+                    <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">数字</span>日</p>
+                    @endif
                 </div>
             </div>
         </div>

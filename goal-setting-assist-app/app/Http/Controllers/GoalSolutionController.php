@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Goal;
+use App\Models\Measurable;
 use App\Models\Solution;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class GoalSolutionController extends Controller
         $solution->eval = $request->input('eval');
         $solution->save();
 
-        return redirect()->route('goals.show', compact('goal'));
+        return redirect()->route('goals.show', compact('goal'))->with('flash_message', "解決策の登録が完了しました。");
     }
 
     /**
@@ -61,7 +62,7 @@ class GoalSolutionController extends Controller
         $solution->eval = $request->input('eval');
         $solution->save();
 
-        return redirect()->route('goals.solutions.show', compact('goal','solution'));
+        return redirect()->route('goals.solutions.show', compact('goal','solution'))->with('flash_message', "解決策の編集が完了しました。");
     }
 
     /**
@@ -75,5 +76,16 @@ class GoalSolutionController extends Controller
         $solution->delete();
 
         return redirect()->route('goals.show', compact('goal'))->with('flash_message', "解決策の削除が完了しました。");
+    }
+
+    public function measurable_store(Request $request, Goal $goal, Solution $solution)
+    {
+        $measurable = new Measurable();
+        $measurable->solution_id = $solution->id;
+        $measurable->progress_unit = $request->input('progress_unit');
+        $measurable->progress_value = $request->input('progress_value');
+        $measurable->save();
+
+        return redirect()->route('goals.solutions.show', compact('goal', 'solution'));
     }
 }
