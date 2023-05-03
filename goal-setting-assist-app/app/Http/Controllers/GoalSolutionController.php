@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use App\Models\Measurable;
+use App\Models\Milestone;
 use App\Models\Solution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +37,14 @@ class GoalSolutionController extends Controller
      */
     public function show(Goal $goal, Solution $solution)
     {
-        return view('goals.solutions.show', compact('goal', 'solution'));
+        $total_date = 0;
+        $solution_id = $solution->id;
+        $milestones = Milestone::where('solution_id', $solution_id)->get();
+        if($milestones != [] ){
+            $total_date = $milestones->pluck('date')->sum();
+        }
+        // dd($total_date);
+        return view('goals.solutions.show', compact('goal', 'solution', 'milestones', 'total_date'));
     }
 
     /**

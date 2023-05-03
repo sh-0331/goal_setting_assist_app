@@ -69,7 +69,8 @@
                 <div class="col">
                     @if($solution->milestone != NULL)
                     <!-- 納期はマイルストーンの合計 -->
-                    <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">数字</span>日</p>
+                    {{dd($total_date)}}
+                    <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">{{ $total_date }}</span>日</p>
                     @endif
                 </div>
             </div>
@@ -106,11 +107,11 @@
 
         <div class="container border p-3">
             <!-- 入れ換えできるようにしたい -->
-            @if($solution->milestones != NULL)
-            @foreach($solution->milestones as $milestone)
+            @if($milestones != NULL)
+            @foreach($milestones as $milestone)
             <p class="fs-1 text-center">↑</p>
             <div class="d-flex">
-                <div class="flex-fill border text-center pt-3 pb-3 bg-light">例）画面設計完了</div>
+                <div class="flex-fill border text-center pt-3 pb-3 bg-light">{{ $milestone->content }}</div>
 
                 <div class="mb-0 align-self-center">
                     <div class="dropdown">
@@ -118,10 +119,10 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
                             <li>
                                 <form action="" method="post">
-                                    <!-- if($milestone->done == false) -->
+                                    @if($milestone->done == false)
                                     <input type="hidden" name="milestone_done" value="true">
                                     <button type="submit" class="dropdown-item btn btn-link">完了</button>
-                                    <!-- endif -->
+                                    @endif
                                 </form>
                             </li>
                             <li><a href="" class="dropdown-item">編集</a></li>
@@ -130,7 +131,7 @@
                     </div>
                 </div>
             </div>
-            <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">5</span>日</p>
+            <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">{{ $milestone->date }}</span>日</p>
             @endforeach
             @endif
         </div>
