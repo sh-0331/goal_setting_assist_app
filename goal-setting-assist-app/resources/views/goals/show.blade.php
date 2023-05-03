@@ -12,7 +12,7 @@
 @endif
 
 <div class="container">
-    <!-- Solution用Modal -->
+    <!-- add_solution用Modal -->
     @include('modals.add_solution')
 
     <div class="container bg-light">
@@ -64,13 +64,12 @@
 
         <div class="container border p-3">
             <div class="row">
-                <!-- foreach -->
+                @foreach($goal->solutions as $solution)
                 <div class="col-4 border text-center pt-3 bg-light">
-                    <a href="#">例）実践経験を積む</a>
-                    <!-- 評価を変数にする -->
-                    <p class="text-center">評価:例）5</p>
+                    <a href="">{{ $solution->content }}</a>
+                    <p class="text-center">評価:{{ $solution->eval }}</p>
                 </div>
-                <!-- endforeach -->
+                @endforeach
             </div>
         </div>
 
