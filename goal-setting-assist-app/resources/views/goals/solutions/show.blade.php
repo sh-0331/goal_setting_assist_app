@@ -33,12 +33,15 @@
                     <p class="fs-3 m-0">{{ $solution->content }}</p>
                 </div>
 
+                <!-- 解決策の定量化用Modal -->
+                @include('modals.edit_quantify_solution')
+
                 <div class="mb-0 align-self-center">
                     <div class="dropdown">
                         <a href="#" class="px-1 fs-3 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
                             @if($solution->measurable != NULL)
-                            <li><a href="measureable.html" class="dropdown-item">定量化の編集</a></li>
+                            <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editQuantifySolutionModal">定量化の編集</a></li>
                             @endif
                             <li><a href="{{ route('goals.solutions.edit', compact('goal','solution')) }}" class="dropdown-item">編集</a></li>
                             <li>

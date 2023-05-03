@@ -6,6 +6,7 @@ use App\Models\Goal;
 use App\Models\Measurable;
 use App\Models\Solution;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GoalSolutionController extends Controller
 {
@@ -82,6 +83,17 @@ class GoalSolutionController extends Controller
     {
         $measurable = new Measurable();
         $measurable->solution_id = $solution->id;
+        $measurable->progress_unit = $request->input('progress_unit');
+        $measurable->progress_value = $request->input('progress_value');
+        $measurable->save();
+
+        return redirect()->route('goals.solutions.show', compact('goal', 'solution'));
+    }
+
+    public function measurable_update(Request $request, Goal $goal, Solution $solution)
+    {
+        $solution_id = $solution->id;
+        $measurable = Measurable::where('solution_id', $solution_id)->first();
         $measurable->progress_unit = $request->input('progress_unit');
         $measurable->progress_value = $request->input('progress_value');
         $measurable->save();

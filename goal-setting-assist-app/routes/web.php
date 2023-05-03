@@ -27,3 +27,5 @@ Route::resource('/goals', GoalController::class)->middleware('auth');
 Route::resource('goals.solutions', GoalSolutionController::class);
 
 Route::post('goals/{goal}/solutions/{solution}', [GoalSolutionController::class, 'measurable_store'])->name('measurable.store');
+
+Route::put('goals/{goal}/solutions/{solution}', [GoalSolutionController::class, 'measurable_update'])->name('measurable.update');
