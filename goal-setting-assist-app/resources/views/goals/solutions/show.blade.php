@@ -32,15 +32,14 @@
                 <div class="flex-fill text-center bg-secondary">
                     <p class="fs-3 m-0">{{ $solution->content }}</p>
                 </div>
-
-                <!-- 解決策の定量化用Modal -->
-                @include('modals.edit_quantify_solution')
-
+                
                 <div class="mb-0 align-self-center">
                     <div class="dropdown">
                         <a href="#" class="px-1 fs-3 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
                             @if($solution->measurable != NULL)
+                            <!-- 解決策の定量化用Modal -->
+                            @include('modals.edit_quantify_solution')
                             <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editQuantifySolutionModal">定量化の編集</a></li>
                             @endif
                             <li><a href="{{ route('goals.solutions.edit', compact('goal','solution')) }}" class="dropdown-item">編集</a></li>
@@ -67,11 +66,8 @@
                 </div>
 
                 <div class="col">
-                    @if($solution->milestone != NULL)
                     <!-- 納期はマイルストーンの合計 -->
-                    {{dd($total_date)}}
                     <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">{{ $total_date }}</span>日</p>
-                    @endif
                 </div>
             </div>
         </div>
