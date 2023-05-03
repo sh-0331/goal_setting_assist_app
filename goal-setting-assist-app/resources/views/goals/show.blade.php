@@ -66,7 +66,7 @@
             <div class="row">
                 @foreach($goal->solutions as $solution)
                 <div class="col-4 border text-center pt-3 bg-light">
-                    <a href="">{{ $solution->content }}</a>
+                    <a href="{{ route('goals.solutions.show', compact('goal', 'solution')) }}">{{ $solution->content }}</a>
                     <p class="text-center">評価:{{ $solution->eval }}</p>
                 </div>
                 @endforeach

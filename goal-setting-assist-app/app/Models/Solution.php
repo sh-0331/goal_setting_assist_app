@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Solution extends Model
 {
     use HasFactory;
-    
+    public function goal() {
+        return $this->belongsTo(Goal::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Goal;
 use App\Models\Solution;
 use Illuminate\Http\Request;
 
@@ -51,9 +52,9 @@ class GoalSolutionController extends Controller
      * @param  \App\Models\Solution  $solution
      * @return \Illuminate\Http\Response
      */
-    public function show(Solution $solution)
+    public function show(Goal $goal, Solution $solution)
     {
-        //
+        return view('goals.solutions.show', compact('goal', 'solution'));
     }
 
     /**
