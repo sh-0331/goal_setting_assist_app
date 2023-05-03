@@ -14,15 +14,13 @@
                     <!-- 解決策の評価 -->
                     <label for="solution_eval" class="form-label">解決策を5段階で評価してみましょう。</label>
                     <select class="form-select" id="solution_eval" name="eval">
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
+                        @for($i=5; $i>=1; $i-=1)
+                        <option value="{{$i}}">{{$i}}</option>
+                        @endfor
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">登録</button>
+                    <button type="submit" class="btn btn-primary" name="create">登録</button>
                 </div>
             </form>
         </div>

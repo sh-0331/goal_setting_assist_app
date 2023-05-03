@@ -33,7 +33,7 @@
             </select>
 
             <div class="d-flex flex-row-reverse mt-3">
-                <button type="submit" class="btn btn-primary" name="create" value="create">編集</button>
+                <button type="submit" class="btn btn-primary" name="update" value="update">更新</button>
             </div>
         </form>
     </div>
