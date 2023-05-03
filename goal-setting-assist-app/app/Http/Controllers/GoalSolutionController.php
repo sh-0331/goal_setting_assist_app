@@ -9,26 +9,6 @@ use Illuminate\Http\Request;
 class GoalSolutionController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -63,9 +43,9 @@ class GoalSolutionController extends Controller
      * @param  \App\Models\Solution  $solution
      * @return \Illuminate\Http\Response
      */
-    public function edit(Solution $solution)
+    public function edit($goal, Solution $solution)
     {
-        //
+        return view('goals.solutions.edit', compact('goal', 'solution'));
     }
 
     /**
@@ -75,9 +55,13 @@ class GoalSolutionController extends Controller
      * @param  \App\Models\Solution  $solution
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Solution $solution)
+    public function update(Request $request, Goal $goal, Solution $solution)
     {
-        //
+        $solution->content = $request->input('content');
+        $solution->eval = $request->input('eval');
+        $solution->save();
+
+        return redirect()->route('goals.solutions.show', compact('goal','solution'));
     }
 
     /**
@@ -86,8 +70,10 @@ class GoalSolutionController extends Controller
      * @param  \App\Models\Solution  $solution
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Solution $solution)
+    public function destroy(Goal $goal, Solution $solution)
     {
-        //
+        $solution->delete();
+
+        return redirect()->route('goals.show', compact('goal'))->with('flash_message', "解決策の削除が完了しました。");
     }
 }

@@ -40,8 +40,14 @@
                             @if($solution->measurable != NULL)
                             <li><a href="measureable.html" class="dropdown-item">定量化の編集</a></li>
                             @endif
-                            <li><a href="" class="dropdown-item">編集</a></li>
-                            <li><a href="" class="dropdown-item text-danger">削除</a></li>
+                            <li><a href="{{ route('goals.solutions.edit', compact('goal','solution')) }}" class="dropdown-item">編集</a></li>
+                            <li>
+                                <form action="{{ route('goals.solutions.destroy', compact('goal', 'solution')) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="dropdown-item text-danger">削除</button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>
