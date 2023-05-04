@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Goal;
+use App\Models\Solution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,27 @@ class GoalController extends Controller
     public function index()
     {
         $goals = Auth::user()->goals;
-        return view('goals.index', compact('goals'));
+        $progress = array();
+        foreach($goals as $goal) {
+            foreach ($goal->solutions as $solution) {
+                $milestones = $solution->milestones;
+                $solution_id = $solution->id;
+                $total_date = $milestones->pluck('date')->sum();
+                $progress[$solution_id]["total_date"] = "{$total_date}";
+                // マイルストーン数
+                $total_count = count($milestones);
+                $done_count = count($milestones->where('done'));
+                if($total_count != 0) {
+                    $per = $done_count / $total_count * 100;
+                }else{
+                    $per = 0;
+                }
+                $progress[$solution_id]["per"] = "{$per}";
+                // dd($solution_id);
+            }
+        }
+        // dd($progress);
+        return view('goals.index', compact("goals", "progress"));
     }
 
     /**

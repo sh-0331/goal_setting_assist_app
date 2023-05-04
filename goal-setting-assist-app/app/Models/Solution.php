@@ -14,4 +14,7 @@ class Solution extends Model
     public function measurable() {
         return $this->hasOne(Measurable::class);
     }
+    public function milestones() {
+        return $this->hasMany(Milestone::class);
+    }
 }
