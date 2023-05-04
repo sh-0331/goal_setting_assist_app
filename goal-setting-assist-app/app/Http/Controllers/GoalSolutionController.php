@@ -39,14 +39,13 @@ class GoalSolutionController extends Controller
     public function show(Goal $goal, Solution $solution)
     {
         $total_date = 0;
-        $solution_id = $solution->id;
-        $milestones = Milestone::where('solution_id', $solution_id)->get();
+        $milestones = Milestone::where('solution_id', $solution->id)->get();
         // マイルストーンが存在する場合
         if(isset($milestones[0])){
             // 未完了の中でrankが最大の更新日付を取得
             $max_rank = $milestones->where('done', 0)->max('rank');
             $latest = $milestones->where('rank', $max_rank)->first();
-            $latest_date = new DateTime($latest->value('updated_at'));
+            $latest_date = new DateTime($latest->updated_at);
             // 今日の日付を取得
             $today = new DateTime('now');
             // 今日と更新日付の日にち差を計算する
