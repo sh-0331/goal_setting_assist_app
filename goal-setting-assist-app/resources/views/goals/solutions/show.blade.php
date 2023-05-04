@@ -32,22 +32,23 @@
                 <div class="flex-fill text-center bg-secondary">
                     <p class="fs-3 m-0">{{ $solution->content }}</p>
                 </div>
+
+                <!-- 解決策の定量化用Modal -->
+                @include('modals.edit_quantify_solution')
                 
                 <div class="mb-0 align-self-center">
                     <div class="dropdown">
                         <a href="#" class="px-1 fs-3 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
                             @if($solution->measurable != NULL)
-                            <!-- 解決策の定量化用Modal -->
-                            @include('modals.edit_quantify_solution')
-                            <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editQuantifySolutionModal">定量化の編集</a></li>
+                            <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editQuantifySolutionModal">定量値の編集</a></li>
                             @endif
                             <li><a href="{{ route('goals.solutions.edit', compact('goal','solution')) }}" class="dropdown-item">編集</a></li>
                             <li>
                                 <form action="{{ route('goals.solutions.destroy', compact('goal', 'solution')) }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="dropdown-item text-danger">削除</button>
+                                    <button type="submit" class="dropdown-item text-danger" name="delete">削除</button>
                                 </form>
                             </li>
                         </ul>
@@ -77,7 +78,7 @@
         
         <!-- マイルストーン追加用Modal -->
         @include('modals.add_milestone')
-
+                
         <div class="col">
             @if($solution->measurable == NULL)
             <a href="#" class="link-dark" data-bs-toggle="modal" data-bs-target="#quantifySolutionModal">
@@ -109,6 +110,9 @@
             <div class="d-flex">
                 <div class="flex-fill border text-center pt-3 pb-3 bg-light">{{ $milestone->content }}</div>
 
+                <!-- マイルストーン編集用モーダル -->
+                @include('modals.edit_milestone')
+
                 <div class="mb-0 align-self-center">
                     <div class="dropdown">
                         <a href="#" class="px-1 fs-5 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
@@ -121,8 +125,17 @@
                                     @endif
                                 </form>
                             </li>
-                            <li><a href="" class="dropdown-item">編集</a></li>
-                            <li><a href="" class="dropdown-item text-danger">削除</a></li>
+                            <li>
+                                <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editMilestoneModal{{ $milestone->id }}">編集</a>
+                            </li>
+                            <!-- マイルストーン削除 -->
+                            <li>
+                                <form action="{{ route('milestones.destroy', [$goal, $solution, $milestone]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="dropdown-item text-danger" name="delete">削除</a>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>

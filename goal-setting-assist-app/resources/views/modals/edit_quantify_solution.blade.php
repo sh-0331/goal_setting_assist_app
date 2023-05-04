@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="editQuantifySolutionModalLabel">解決策の定量化</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('measurable.update', compact('goal', 'solution')) }}" method="post">
+            <form action="{{ route('measurable.update', [$goal, $solution, $solution->measurable]) }}" method="post">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">

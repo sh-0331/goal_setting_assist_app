@@ -114,10 +114,8 @@ class GoalSolutionController extends Controller
         return redirect()->route('goals.solutions.show', compact('goal', 'solution'));
     }
 
-    public function measurable_update(Request $request, Goal $goal, Solution $solution)
+    public function measurable_update(Request $request, Goal $goal, Solution $solution, Measurable $measurable)
     {
-        $solution_id = $solution->id;
-        $measurable = Measurable::where('solution_id', $solution_id)->first();
         $measurable->progress_unit = $request->input('progress_unit');
         $measurable->progress_value = $request->input('progress_value');
         $measurable->save();
