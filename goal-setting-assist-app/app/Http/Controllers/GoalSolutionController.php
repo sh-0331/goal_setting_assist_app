@@ -42,10 +42,10 @@ class GoalSolutionController extends Controller
         $solution_id = $solution->id;
         $milestones = Milestone::where('solution_id', $solution_id)->get();
         // マイルストーンが存在する場合
-        if($milestones != [] ){
+        if(isset($milestones[0])){
             // 未完了の中でrankが最大の更新日付を取得
             $max_rank = $milestones->where('done', 0)->max('rank');
-            $latest = $milestones->where('rank', $max_rank)[1];
+            $latest = $milestones->where('rank', $max_rank)->first();
             $latest_date = new DateTime($latest->value('updated_at'));
             // 今日の日付を取得
             $today = new DateTime('now');
