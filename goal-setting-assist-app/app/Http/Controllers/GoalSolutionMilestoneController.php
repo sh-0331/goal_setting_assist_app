@@ -11,26 +11,6 @@ use Illuminate\Support\Facades\DB;
 class GoalSolutionMilestoneController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -42,11 +22,11 @@ class GoalSolutionMilestoneController extends Controller
         $milestone->solution_id = $solution->id;
         $milestone->content = $request->input('content');
         $milestone->date = $request->input('date');
-        // $milestone->done;
         
+        // 作成順にマイルストーンの順番（rank）を取得する
         $solution_id = $solution->id;
         $milestones = DB::table('milestones')->where('solution_id', $solution_id)->get();
-        // 同じSolutionを持つMilestoneの中で、最も大きいrankを取得する
+        // Milestoneの中で最も大きいrankを取得する
         if($milestones != []) {
             $max_rank = $milestones->max('rank');
             $rank = $max_rank + 1 ;
@@ -60,37 +40,19 @@ class GoalSolutionMilestoneController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Milestone  $milestone
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Milestone $milestone)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Milestone  $milestone
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Milestone $milestone)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Milestone  $milestone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Milestone $milestone)
+    public function update(Request $request, Goal $goal, Solution $solution, Milestone $milestone)
     {
-        //
+        $milestone->content = $request->input('content');
+        $milestone->date = $request->input('date');
+        $milestone->save();
+
+        return redirect()->route('goals.solutions.show', compact('goal', 'solution'))->with('flash_message', "マイルストーンの更新が完了しました。");
     }
 
     /**
@@ -99,8 +61,15 @@ class GoalSolutionMilestoneController extends Controller
      * @param  \App\Models\Milestone  $milestone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Milestone $milestone)
+    public function destroy(Goal $goal, Solution $solution, Milestone $milestone)
     {
-        //
+        $milestone->delete();
+
+        return redirect()->route('goals.solutions.show', [$goal, $solution])->with('flash_message', "マイルストーンの削除が完了しました。");
     }
+
+        // マイルストーンの完了ボタンを押したらdoneを1にする
+        // 期日は今日と更新日の差分をマイナスすることで減らしているため
+        // 完了ボタンが押されたら同タイミングで2番目に大きいrankのupdated_atを更新する
+        // $milestone->done;
 }
