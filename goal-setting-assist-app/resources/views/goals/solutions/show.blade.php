@@ -106,6 +106,7 @@
             <!-- 入れ換えできるようにしたい -->
             @if($milestones != NULL)
             @foreach($milestones as $milestone)
+            @if($milestone->done == 0)
             <p class="fs-1 text-center">↑</p>
             <div class="d-flex">
                 <div class="flex-fill border text-center pt-3 pb-3 bg-light">{{ $milestone->content }}</div>
@@ -118,11 +119,12 @@
                         <a href="#" class="px-1 fs-5 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
                             <li>
-                                <form action="" method="post">
-                                    @if($milestone->done == false)
-                                    <input type="hidden" name="milestone_done" value="true">
-                                    <button type="submit" class="dropdown-item btn btn-link">完了</button>
-                                    @endif
+                                <form action="{{ route('milestones.update', [$goal, $solution, $milestone]) }}" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <!-- マイルストーン完了 -->
+                                    <input type="hidden" name="done" value="1">
+                                    <button type="submit" class="dropdown-item btn btn-link" name="milestone_done">完了</button>
                                 </form>
                             </li>
                             <li>
@@ -141,6 +143,7 @@
                 </div>
             </div>
             <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">{{ $milestone->date }}</span>日</p>
+            @endif
             @endforeach
             @endif
         </div>

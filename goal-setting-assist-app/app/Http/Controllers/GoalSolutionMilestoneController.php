@@ -48,11 +48,18 @@ class GoalSolutionMilestoneController extends Controller
      */
     public function update(Request $request, Goal $goal, Solution $solution, Milestone $milestone)
     {
-        $milestone->content = $request->input('content');
-        $milestone->date = $request->input('date');
+        // dd([$request->input('done'), $request->input('content')]);
+        if($request->input('done') != NULL ){
+            $milestone->done = $request->input('done');
+            $flash_message = "マイルストーンをアーカイブしました。";
+        } elseif($request->input('content') != NULL){
+            $milestone->content = $request->input('content');
+            $milestone->date = $request->input('date');
+            $flash_message = "マイルストーンの更新が完了しました。";
+        }
         $milestone->save();
 
-        return redirect()->route('goals.solutions.show', compact('goal', 'solution'))->with('flash_message', "マイルストーンの更新が完了しました。");
+        return redirect()->route('goals.solutions.show', compact('goal', 'solution'))->with('flash_message', "{$flash_message}");
     }
 
     /**
@@ -71,5 +78,9 @@ class GoalSolutionMilestoneController extends Controller
         // マイルストーンの完了ボタンを押したらdoneを1にする
         // 期日は今日と更新日の差分をマイナスすることで減らしているため
         // 完了ボタンが押されたら同タイミングで2番目に大きいrankのupdated_atを更新する
-        // $milestone->done;
+        public function done(Request $request, )
+        {
+            $
+            $milestone->done;
+        }
 }
