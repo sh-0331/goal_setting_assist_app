@@ -3,6 +3,7 @@
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\GoalSolutionController;
 use App\Http\Controllers\GoalSolutionMilestoneController;
+use App\Http\Controllers\MypageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +38,6 @@ Route::put('goals/{goal}/solutions/{solution}/measurable/{measurable}', [GoalSol
 Route::post('goals/{goal}/solutions/{solution}/milestone', [GoalSolutionMilestoneController::class, 'store'])->name('milestones.store')->middleware('auth');
 Route::put('goals/{goal}/solutions/{solution}/milestone/{milestone}', [GoalSolutionMilestoneController::class, 'update'])->name('milestones.update')->middleware('auth');
 Route::delete('goals/{goal}/solutions/{solution}/milestone/{milestone}', [GoalSolutionMilestoneController::class, 'destroy'])->name('milestones.destroy')->middleware('auth');
+
+// Mypageのルーティング
+Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index')->middleware('auth');

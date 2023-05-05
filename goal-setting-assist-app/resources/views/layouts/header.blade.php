@@ -38,7 +38,7 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
                                 <!-- <a href="../users/mypage.html" class="m-0 text-decoration-none">My page</a> -->
-                                <a href="#" class="dropdown-item">My page</a>
+                                <a href="{{ route('mypage.index') }}" class="dropdown-item">My page</a>
                             </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
