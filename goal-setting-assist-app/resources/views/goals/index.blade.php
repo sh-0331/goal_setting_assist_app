@@ -41,13 +41,12 @@
                     <div class="row m-0">
                         <div class="col-9 d-block mt-2">
                             <div class="progress" style="height: 20px;">
-                                <!-- <div class="progress-bar" role="progressbar" style="width:%;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">%</div> -->
-                                <div class="progress-bar" role="progressbar" style="width: {{ $progress[$solution->id]["per"] }}%" aria-valuenow="{{ $progress[$solution->id]["per"] }}%" aria-valuemin="0" aria-valuemax="100">{{ $progress["$solution->id"]["per"] }}%</div>
+                                <div class="progress-bar" role="progressbar" style="width: {{ $pers[$solution->id] }}%" aria-valuenow="{{ $pers[$solution->id] }}%" aria-valuemin="0" aria-valuemax="100">{{ $pers[$solution->id] }}%</div>
                             </div>
                         </div>
                         <div class="col-3 d-flex flex-row ps-2 mb-3">
                             <p class="mb-0 d-flex align-items-center">残日数</p>
-                            <p class="btn btn-secondary ms-1 mb-0">{{ $progress["$solution->id"]["total_date"] }}日</p>
+                            <p class="btn btn-secondary ms-1 mb-0">{{ $total_dates[$solution->id] }}日</p>
                         </div>
                     </div>
                 </div>

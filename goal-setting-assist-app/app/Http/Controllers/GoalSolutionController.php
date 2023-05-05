@@ -42,8 +42,10 @@ class GoalSolutionController extends Controller
         $milestones = Milestone::where('solution_id', $solution->id)->get();
         // マイルストーンが存在する場合
         if(isset($milestones[0])){
+            // 未完了のマイルストーンを取得する
+            $active_milestone = $milestones->where('done', '0');
             // 未完了の中でrankが最大の更新日付を取得
-            $max_rank = $milestones->where('done', 0)->max('rank');
+            $max_rank = $active_milestone->max('rank');
             $latest = $milestones->where('rank', $max_rank)->first();
             $latest_date = new DateTime($latest->updated_at);
             // 今日の日付を取得
@@ -55,8 +57,8 @@ class GoalSolutionController extends Controller
             $latest->date = $latest->date - $diff_day;
             $latest->save();
 
-            // 最終的なdateの合計値を返す
-            $total_date = $milestones->pluck('date')->sum();
+            // 未完了の最終的なdateの合計値を返す
+            $total_date = $active_milestone->pluck('date')->sum();
         }
 
         return view('goals.solutions.show', compact('goal', 'solution', 'milestones', 'total_date'));

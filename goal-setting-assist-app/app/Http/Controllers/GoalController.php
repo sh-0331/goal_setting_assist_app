@@ -22,22 +22,22 @@ class GoalController extends Controller
             foreach ($goal->solutions as $solution) {
                 $milestones = $solution->milestones;
                 $solution_id = $solution->id;
-                $total_date = $milestones->pluck('date')->sum();
-                $progress[$solution_id]["total_date"] = "{$total_date}";
-                // マイルストーン数
+                $total_date = $milestones->where('done', '0')->pluck('date')->sum();
+                $total_dates[$solution_id] = $total_date;
+                // マイルストーンの総数
                 $total_count = count($milestones);
-                $done_count = count($milestones->where('done'));
+                $done_count = count($milestones->where('done', '1'));
                 if($total_count != 0) {
-                    $per = $done_count / $total_count * 100;
+                    $per = round($done_count / $total_count * 100, 1);
                 }else{
                     $per = 0;
                 }
-                $progress[$solution_id]["per"] = "{$per}";
+                $pers[$solution_id] = $per;
                 // dd($solution_id);
             }
         }
-        // dd($progress);
-        return view('goals.index', compact("goals", "progress"));
+        // dd($pers);
+        return view('goals.index', compact("goals", "total_dates", "pers"));
     }
 
     /**
