@@ -37,8 +37,8 @@
             @if($goal->done != '1')
             <div class="container border bg-light">
                 <a href="{{ route('goals.show', compact('goal')) }}" class="fs-4">{{ $goal->goal_content }}</a>
-                @if($goal->solutions != NULL)
                 @foreach ($goal->solutions as $solution)
+                @if($solution->done != '1')
                 <div class="border mt-1 mb-1">
                     <p class="m-2 fst-italic fs-5">{{ $solution->content }}</p>
                     <div class="row m-0">
@@ -53,8 +53,8 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
                 @endif
+                @endforeach
             </div>
             @endif
             @endforeach
