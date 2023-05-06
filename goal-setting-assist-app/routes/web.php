@@ -41,3 +41,6 @@ Route::delete('goals/{goal}/solutions/{solution}/milestone/{milestone}', [GoalSo
 
 // Mypageのルーティング
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index')->middleware('auth');
+Route::get('/mypage/edit', [MypageController::class, 'edit'])->name('mypage.edit')->middleware('auth');
+Route::put('/mypage/edit', [MypageController::class, 'update'])->name('mypage.update')->middleware('auth');
+Route::get('/mypage/archive', [MypageController::class, 'show_archive'])->name('mypage.show_archive')->middleware('auth');

@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <a href="edit.html"><i class="fas fa-chevron-right fa-2x"></i></a>
+                    <a href="{{ route('mypage.edit') }}"><i class="fas fa-chevron-right fa-2x"></i></a>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <a href="archive.html"><i class="fas fa-chevron-right fa-2x"></i></a>
+                    <a href="{{route('mypage.show_archive')}}"><i class="fas fa-chevron-right fa-2x"></i></a>
                 </div>
             </div>
         </div>
