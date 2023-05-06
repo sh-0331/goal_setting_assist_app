@@ -102,16 +102,31 @@ class GoalController extends Controller
      */
     public function update(Request $request, Goal $goal)
     {
-        // $goal->user_id = Auth::user();
-        $goal->classification = $request->input('classification');
-        $goal->goal_content = $request->input('goal_content');
-        $goal->merit = $request->input('merit');
-        $goal->eval = $request->input('eval');
-        // $goal->done;
-        $goal->start_content = $request->input('start_content');
+        // dd($request->input('done'));
+        if($request->input('done') != NULL ){
+            $goal->done = $request->input('done');
+            // Goalに紐付くSolutionも完了させる
+            $solutions = $goal->solutions()->where('done', '0')->get();
+            // dd($solutions);
+            foreach($solutions as $solution){
+                // dd($milestone);
+                $solution->done = '1';
+                $solution->save();
+                // dd($milestone->done);
+            }
+            $flash_message = "Goalをアーカイブしました。";
+        } elseif($request->input('goal_content') != NULL){
+            $goal->classification = $request->input('classification');
+            $goal->goal_content = $request->input('goal_content');
+            $goal->merit = $request->input('merit');
+            $goal->eval = $request->input('eval');
+            $goal->start_content = $request->input('start_content');
+            $flash_message = "Goalの更新が完了しました。";
+        }
         $goal->save();
+        // dd($solution);
 
-        return redirect()->route('goals.show', compact('goal'))->with('flash_message', "編集が完了しました。");
+        return redirect()->route('goals.index')->with('flash_message', "{$flash_message}");
     }
 
     /**

@@ -32,11 +32,21 @@
                     <a href="#" class="px-1 fs-3 link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
                         <li><a href="{{ route('goals.edit', compact('goal')) }}" class="dropdown-item">編集</a></li>
-                        <form action="{{ route('goals.destroy', compact('goal')) }}" method="post">
-                            @method('DELETE')
-                            @csrf
-                            <li><button type="submit" class="dropdown-item text-danger" name="delete">削除</button></li>
-                        </form>
+                        <li>
+                            <form action="{{ route('goals.destroy', compact('goal')) }}" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger" name="delete">削除</button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{{ route('goals.update', compact('goal')) }}" method="post">
+                                @method('PUT')
+                                @csrf
+                                <input type="hidden" name="done" value="1">
+                                <button type="submit" class="dropdown-item" name="archive">アーカイブ</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>

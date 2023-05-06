@@ -23,7 +23,9 @@
             <h2>Goal一覧</h2>
             <ul class="list-grop">
                 @foreach ($goals as $goal)
+                @if($goal->done != '1')
                 <li class="list-group-item"><a href="{{ route('goals.show', compact('goal')) }}">{{ $goal->goal_content }}</a></li>
+                @endif
                 @endforeach
             </ul>
         </div>
@@ -32,6 +34,7 @@
             <h2>Goalの達成率・残日数</h2>
             <hr>
             @foreach ($goals as $goal)
+            @if($goal->done != '1')
             <div class="container border bg-light">
                 <a href="{{ route('goals.show', compact('goal')) }}" class="fs-4">{{ $goal->goal_content }}</a>
                 @if($goal->solutions != NULL)
@@ -53,6 +56,7 @@
                 @endforeach
                 @endif
             </div>
+            @endif
             @endforeach
         </div>
     </div>
