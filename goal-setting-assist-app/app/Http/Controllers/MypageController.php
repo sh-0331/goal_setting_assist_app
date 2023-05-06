@@ -50,4 +50,28 @@ class MypageController extends Controller
 
         return view('mypage.archive', compact('done_goals', 'done_solutions', 'done_milestones'));
     }
+
+    public function active(Request $request)
+    {
+        // アーカイブした項目をアクティブに戻す
+        // doneを'0'にする
+        // dd($request->input('active_item'));
+        $flash_message = "";
+        if($request->input('active_item') == 'goal' ){
+            // dd(true);
+            $goal_id = $request->input('goal_id');
+            $archive_goal = Goal::find($goal_id);
+            // dd($archive_goal);
+            $archive_goal->done = '0';
+            // dd($archive_goal->done);
+            $archive_goal->save();
+            $flash_message = "Goalをアクティブにしました。";
+        }
+        // dd(false);
+        return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
+    }
+
+    public function destroy(){
+        // アーカイブした項目を完全に削除する
+    }
 }

@@ -9,6 +9,12 @@
 
 <br>
 
+@if(session('flash_message'))
+    <div class="flash_message bg-success text-center py-3 mb-1">
+        {{ session('flash_message') }}
+    </div>
+@endif
+
 <div class="container">
     <h4 class="text-success">アーカイブ一覧</h4>
     <div class="row border">
@@ -63,7 +69,15 @@
                 <div class="dropdown">
                     <a href="#" class="fs-4 link-dark text-decoration-none" id="dropdownArchiveMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">≡</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownArchiveMenuLink">
-                        <li><a href="" class="dropdown-item">アクティブ</a></li>
+                        <li>
+                            <form action="{{ route('mypage.active') }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="active_item" value="goal">
+                                <input type="hidden" name="goal_id" value="{{ $_GET['goal'] }}">
+                                <button type="submit" class="dropdown-item" name="active">アクティブ</button>
+                            </form>
+                        </li>
                         <li><a href="" class="dropdown-item text-danger">削除</a></li>
                     </ul>
                 </div>
@@ -84,7 +98,15 @@
                 <div class="dropdown">
                     <a href="#" class="fs-4 link-dark text-decoration-none" id="dropdownArchiveMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">≡</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownArchiveMenuLink">
-                        <li><a href="" class="dropdown-item">アクティブ</a></li>
+                        <li>
+                            <form action="{{ route('mypage.active') }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="active" value="solution">
+                                <input type="hidden" name="active_value" value="{{ $_GET['solution'] }}">
+                                <button type="submit" class="dropdown-item" name="active">アクティブ</button>
+                            </form>
+                        </li>
                         <li><a href="" class="dropdown-item text-danger">削除</a></li>
                     </ul>
                 </div>
