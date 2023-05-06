@@ -42,23 +42,30 @@ class GoalSolutionController extends Controller
         $milestones = Milestone::where('solution_id', $solution->id)->get();
         // マイルストーンが存在する場合
         if(isset($milestones[0])){
+            // dd($milestones);
             // 未完了のマイルストーンを取得する
             $active_milestone = $milestones->where('done', '0');
-            // 未完了の中でrankが最大の更新日付を取得
-            $max_rank = $active_milestone->max('rank');
-            $latest = $milestones->where('rank', $max_rank)->first();
-            $latest_date = new DateTime($latest->updated_at);
-            // 今日の日付を取得
-            $today = new DateTime('now');
-            // 今日と更新日付の日にち差を計算する
-            $diff = $latest_date->diff($today);
-            $diff_day = $diff->format('%a');
-            // 日にちの差をdateから引き、保存する
-            $latest->date = $latest->date - $diff_day;
-            $latest->save();
+            // dd(empty($active_milestone));
+            if(empty($active_milestone)){
+                // 未完了の中でrankが最大の更新日付を取得
+                $max_rank = $active_milestone->max('rank');
+                // dd($max_rank);
+                $latest = $milestones->where('rank', $max_rank)->first();
+                // dd($latest);
+                $latest_date = new DateTime($latest->updated_at);
+                // 今日の日付を取得
+                $today = new DateTime('now');
+                // 今日と更新日付の日にち差を計算する
+                $diff = $latest_date->diff($today);
+                $diff_day = $diff->format('%a');
+                // 日にちの差をdateから引き、保存する
+                $latest->date = $latest->date - $diff_day;
+                $latest->save();
+            }
 
             // 未完了の最終的なdateの合計値を返す
             $total_date = $active_milestone->pluck('date')->sum();
+            // dd($total_date);
         }
 
         return view('goals.solutions.show', compact('goal', 'solution', 'milestones', 'total_date'));
@@ -84,11 +91,28 @@ class GoalSolutionController extends Controller
      */
     public function update(Request $request, Goal $goal, Solution $solution)
     {
-        $solution->content = $request->input('content');
-        $solution->eval = $request->input('eval');
+        // dd($request->input('done'));
+        if($request->input('done') != NULL ){
+            $solution->done = $request->input('done');
+            // Solutionに紐付くマイルストーンも完了させる
+            $milestones = $solution->milestones()->where('done', '0')->get();
+            // dd($milestones);
+            foreach($milestones as $milestone){
+                // dd($milestone);
+                $milestone->done = '1';
+                $milestone->save();
+                // dd($milestone->done);
+            }
+            $flash_message = "解決策をアーカイブしました。";
+        } elseif($request->input('content') != NULL){
+            $solution->content = $request->input('content');
+            $solution->date = $request->input('eval');
+            $flash_message = "解決策の更新が完了しました。";
+        }
         $solution->save();
+        // dd($solution);
 
-        return redirect()->route('goals.solutions.show', compact('goal','solution'))->with('flash_message', "解決策の編集が完了しました。");
+        return redirect()->route('goals.show', compact('goal'))->with('flash_message', "{$flash_message}");
     }
 
     /**

@@ -65,10 +65,12 @@
         <div class="container border p-3">
             <div class="row">
                 @foreach($goal->solutions as $solution)
+                @if($solution->done != 1)
                 <div class="col-4 border text-center pt-3 bg-light">
                     <a href="{{ route('goals.solutions.show', compact('goal', 'solution')) }}">{{ $solution->content }}</a>
                     <p class="text-center">評価:{{ $solution->eval }}</p>
                 </div>
+                @endif
                 @endforeach
             </div>
         </div>

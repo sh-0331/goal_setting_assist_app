@@ -51,6 +51,14 @@
                                     <button type="submit" class="dropdown-item text-danger" name="delete">削除</button>
                                 </form>
                             </li>
+                            <li>
+                                <form action="{{ route('goals.solutions.update', compact('goal', 'solution')) }}" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="done" value="1">
+                                    <button type="submit" class="dropdown-item" name="archive">アーカイブ</button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -106,7 +114,7 @@
             <!-- 入れ換えできるようにしたい -->
             @if($milestones != NULL)
             @foreach($milestones as $milestone)
-            @if($milestone->done == 0)
+            @if($milestone->done != '1')
             <p class="fs-1 text-center">↑</p>
             <div class="d-flex">
                 <div class="flex-fill border text-center pt-3 pb-3 bg-light">{{ $milestone->content }}</div>
