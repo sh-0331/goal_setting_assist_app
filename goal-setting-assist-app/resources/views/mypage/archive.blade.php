@@ -127,7 +127,15 @@
                 <div class="dropdown">
                     <a href="#" class="fs-4 link-dark text-decoration-none" id="dropdownArchiveMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">≡</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownArchiveMenuLink">
-                        <li><a href="" class="dropdown-item">アクティブ</a></li>
+                        <li>
+                            <form action="{{ route('mypage.active') }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="active_item" value="milestone">
+                                <input type="hidden" name="milestone_id" value="{{ $_GET['milestone'] }}">
+                                <button type="submit" class="dropdown-item" name="active">アクティブ</button>
+                            </form>
+                        </li>
                         <li><a href="" class="dropdown-item text-danger">削除</a></li>
                     </ul>
                 </div>

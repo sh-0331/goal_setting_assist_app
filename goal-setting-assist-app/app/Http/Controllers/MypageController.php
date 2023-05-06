@@ -55,32 +55,49 @@ class MypageController extends Controller
     {
         // アーカイブした項目をアクティブに戻す
         // doneを'0'にする
-        // dd($request->input('active_item'));
         $flash_message = "";
         if($request->input('active_item') == 'goal'){
-            // dd(true);
             $goal_id = $request->input('goal_id');
             $archive_goal = Goal::find($goal_id);
-            // dd($archive_goal);
             $archive_goal->done = '0';
-            // dd($archive_goal->done);
             $archive_goal->save();
             $flash_message = "Goalをアクティブにしました。";
         } elseif($request->input('active_item') == 'solution'){
-            // dd(true);
             $solution_id = $request->input('solution_id');
             $archive_solution = Solution::find($solution_id);
             $archive_solution->done = '0';
             $archive_solution->save();
             // もし関連するGoalがアーカイブされていたらアクティブにする
             $rel_goal = $archive_solution->goal;
-            // dd($rel_goal);
+            if($rel_goal->done == '1'){
+                $rel_goal->done = '0';
+                $rel_goal->save();
+            }
+            $flash_message = "Solutionをアクティブにしました。";
+        } elseif($request->input('active_item') == 'milestone'){
+            // dd(true);
+            $milestone_id = $request->input('milestone_id');
+            // dd($milestone_id);
+            $archive_milestone = Milestone::find($milestone_id);
+            // dd($archive_milestone);
+            $archive_milestone->done = '0';
+            // dd($archive_milestone);
+            $archive_milestone->save();
+            // もし関連するSolutionがアーカイブされていたらアクティブにする
+            $rel_solution = $archive_milestone->solution;
+            if($rel_solution->done == '1'){
+                $rel_solution->done = '0';
+                // dd($rel_solution);
+                $rel_solution->save();
+            }
+            // もし関連するGoalがアーカイブされていたらアクティブにする
+            $rel_goal = $rel_solution->goal;
             if($rel_goal->done == '1'){
                 $rel_goal->done = '0';
                 // dd($rel_goal);
                 $rel_goal->save();
             }
-            $flash_message = "Solutionをアクティブにしました。";
+            $flash_message = "Milestoneをアクティブにしました。";
         }
         // dd(false);
         return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
