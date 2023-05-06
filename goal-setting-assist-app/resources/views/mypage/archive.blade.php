@@ -62,6 +62,7 @@
     <div class="container">
         <h2 class="mt-3 mb-3 text-center">詳細</h2>
         <hr>
+        <!-- Goalの詳細 -->
         @if($_GET != NULL && isset($_GET['goal']))
         <div class="container border mb-1">
             <div class="d-flex">
@@ -90,7 +91,7 @@
             @endforeach
         </div>
         @endif
-
+        <!-- Solutionの詳細 -->
         @if($_GET != NULL && isset($_GET['solution']))
         <div class="container border mb-1">
             <div class="d-flex">
@@ -102,8 +103,8 @@
                             <form action="{{ route('mypage.active') }}" method="post">
                                 @csrf
                                 @method('PUT')
-                                <input type="hidden" name="active" value="solution">
-                                <input type="hidden" name="active_value" value="{{ $_GET['solution'] }}">
+                                <input type="hidden" name="active_item" value="solution">
+                                <input type="hidden" name="solution_id" value="{{ $_GET['solution'] }}">
                                 <button type="submit" class="dropdown-item" name="active">アクティブ</button>
                             </form>
                         </li>
@@ -118,7 +119,7 @@
             @endforeach
         </div>
         @endif
-
+        <!-- Milestoneの詳細 -->
         @if($_GET != NULL && isset($_GET['milestone']))
         <div class="container border mb-1">
             <div class="d-flex">

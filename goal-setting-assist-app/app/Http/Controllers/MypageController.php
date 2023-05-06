@@ -57,7 +57,7 @@ class MypageController extends Controller
         // doneを'0'にする
         // dd($request->input('active_item'));
         $flash_message = "";
-        if($request->input('active_item') == 'goal' ){
+        if($request->input('active_item') == 'goal'){
             // dd(true);
             $goal_id = $request->input('goal_id');
             $archive_goal = Goal::find($goal_id);
@@ -66,6 +66,21 @@ class MypageController extends Controller
             // dd($archive_goal->done);
             $archive_goal->save();
             $flash_message = "Goalをアクティブにしました。";
+        } elseif($request->input('active_item') == 'solution'){
+            // dd(true);
+            $solution_id = $request->input('solution_id');
+            $archive_solution = Solution::find($solution_id);
+            $archive_solution->done = '0';
+            $archive_solution->save();
+            // もし関連するGoalがアーカイブされていたらアクティブにする
+            $rel_goal = $archive_solution->goal;
+            // dd($rel_goal);
+            if($rel_goal->done == '1'){
+                $rel_goal->done = '0';
+                // dd($rel_goal);
+                $rel_goal->save();
+            }
+            $flash_message = "Solutionをアクティブにしました。";
         }
         // dd(false);
         return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
