@@ -22,10 +22,10 @@
         <div class="col border-start border-end">
             <h5 class="fw-bold fst-italic">Goal</h5>
             <div class="d-flex flex-column">
-                @foreach($done_goals as $goal)
+                @foreach($done_goals as $i => $goal)
                 <div class="d-flex">
                     <div><span class="fw-bold">・</span>{{ $goal->updated_at->format('Y.n.j') }}</div>
-                    <div><a class="ms-2 link-dark" href="?goal={{$goal->id}}">{{ $goal->goal_content }}</a></div>
+                    <div><a class="ms-2 link-dark" href="?goal={{$i}}">{{ $goal->goal_content }}</a></div>
                 </div>
                 @endforeach
             </div>
@@ -35,10 +35,10 @@
         <div class="col border-start border-end">
             <h5 class="fw-bold fst-italic">Solution</h5>
             <div class="d-flex flex-column">
-                @foreach($done_solutions as $solution)
+                @foreach($done_solutions as $i => $solution)
                 <div class="d-flex">
                     <div><span class="fw-bold">・</span>{{ $solution->updated_at->format('Y.n.j') }}</div>
-                    <div><a class="ms-2 link-dark" href="?solution={{$solution->id}}">{{ $solution->content }}</a></div>
+                    <div><a class="ms-2 link-dark" href="?solution={{$i}}">{{ $solution->content }}</a></div>
                 </div>
                 @endforeach
             </div>
@@ -48,10 +48,10 @@
         <div class="col border-start border-end">
             <h5 class="fw-bold fst-italic">Milestone</h5>
             <div class="d-flex flex-column">
-                @foreach($done_milestones as $milestone)
+                @foreach($done_milestones as $i => $milestone)
                 <div class="d-flex">
                     <div><span class="fw-bold">・</span>{{ $milestone->updated_at->format('Y.n.j') }}</div>
-                    <div><a class="ms-2 link-dark" href="?milestone={{$milestone->id}}">{{ $milestone->content }}</a></div>
+                    <div><a class="ms-2 link-dark" href="?milestone={{$i}}">{{ $milestone->content }}</a></div>
                 </div>
                 @endforeach
             </div>
@@ -66,7 +66,7 @@
         @if($_GET != NULL && isset($_GET['goal']))
         <div class="container border mb-1">
             <div class="d-flex">
-                <p class="flex-fill fs-4 mb-0">{{ $done_goals->find($_GET['goal'])->goal_content }}</p>
+                <p class="flex-fill fs-4 mb-0">{{ $done_goals[$_GET['goal']]->goal_content }}</p>
                 <div class="dropdown">
                     <a href="#" class="fs-4 link-dark text-decoration-none" id="dropdownArchiveMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">≡</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownArchiveMenuLink">
@@ -75,7 +75,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="active_item" value="goal">
-                                <input type="hidden" name="goal_id" value="{{ $_GET['goal'] }}">
+                                <input type="hidden" name="goal_id" value="{{ $done_goals[$_GET['goal']]->id }}">
                                 <button type="submit" class="dropdown-item" name="active">アクティブ</button>
                             </form>
                         </li>
@@ -83,10 +83,10 @@
                     </ul>
                 </div>
             </div>
-            <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_goals->find($_GET['goal'])->updated_at->format('Y.n.j') }}</span></p>
-            <p class="mb-0 d-flex align-items-center">ゴールのメリット：<span class="fst-italic">{{ $done_goals->find($_GET['goal'])->merit }}</span></p>
-            <p class="mb-0 d-flex align-items-center">スタート：<span class="fst-italic">{{ $done_goals->find($_GET['goal'])->start_content }}</span></p>
-            @foreach($done_solutions->where('goals_id', $_GET['goal']) as $solution)
+            <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_goals[$_GET['goal']]->updated_at->format('Y.n.j') }}</span></p>
+            <p class="mb-0 d-flex align-items-center">ゴールのメリット：<span class="fst-italic">{{ $done_goals[$_GET['goal']]->merit }}</span></p>
+            <p class="mb-0 d-flex align-items-center">スタート：<span class="fst-italic">{{ $done_goals[$_GET['goal']]->start_content }}</span></p>
+            @foreach($done_goals[$_GET['goal']]->solutions as $solution)
             <p class="mb-0 d-flex align-items-center">関連するソリューション：<span class="fst-italic">{{ $solution->content }}</span></p>
             @endforeach
         </div>
@@ -95,7 +95,7 @@
         @if($_GET != NULL && isset($_GET['solution']))
         <div class="container border mb-1">
             <div class="d-flex">
-                <p class="flex-fill fs-4 mb-0">{{ $done_solutions->find($_GET['solution'])->content }}</p>
+                <p class="flex-fill fs-4 mb-0">{{ $done_solutions[$_GET['solution']]->content }}</p>
                 <div class="dropdown">
                     <a href="#" class="fs-4 link-dark text-decoration-none" id="dropdownArchiveMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">≡</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownArchiveMenuLink">
@@ -104,7 +104,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="active_item" value="solution">
-                                <input type="hidden" name="solution_id" value="{{ $_GET['solution'] }}">
+                                <input type="hidden" name="solution_id" value="{{ $done_solutions[$_GET['solution']]->id }}">
                                 <button type="submit" class="dropdown-item" name="active">アクティブ</button>
                             </form>
                         </li>
@@ -112,9 +112,9 @@
                     </ul>
                 </div>
             </div>
-            <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_solutions->find($_GET['solution'])->updated_at->format('Y.n.j') }}</span></p>
-            <p class="mb-0 d-flex align-items-center">関連するゴール：<span class="fst-italic">{{ $done_solutions->find($_GET['solution'])->goal->goal_content }}</span></p>
-            @foreach($done_milestones->where('solution_id', $_GET['solution']) as $milestone)
+            <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_solutions[$_GET['solution']]->updated_at->format('Y.n.j') }}</span></p>
+            <p class="mb-0 d-flex align-items-center">関連するゴール：<span class="fst-italic">{{ $done_solutions[$_GET['solution']]->goal->goal_content }}</span></p>
+            @foreach($done_solutions[$_GET['solution']]->milestones as $milestone)
             <p class="mb-0 d-flex align-items-center">関連するマイルストーン：<span class="fst-italic">{{ $milestone->content }}</span></p>
             @endforeach
         </div>
@@ -123,7 +123,7 @@
         @if($_GET != NULL && isset($_GET['milestone']))
         <div class="container border mb-1">
             <div class="d-flex">
-                <p class="flex-fill fs-4 mb-0">{{ $done_milestones->find($_GET['milestone'])->content }}</p>
+                <p class="flex-fill fs-4 mb-0">{{ $done_milestones[$_GET['milestone']]->content }}</p>
                 <div class="dropdown">
                     <a href="#" class="fs-4 link-dark text-decoration-none" id="dropdownArchiveMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">≡</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownArchiveMenuLink">
@@ -132,7 +132,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="active_item" value="milestone">
-                                <input type="hidden" name="milestone_id" value="{{ $_GET['milestone'] }}">
+                                <input type="hidden" name="milestone_id" value="{{ $done_milestones[$_GET['milestone']]->id }}">
                                 <button type="submit" class="dropdown-item" name="active">アクティブ</button>
                             </form>
                         </li>
@@ -140,8 +140,8 @@
                     </ul>
                 </div>
             </div>
-            <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_milestones->find($_GET['milestone'])->updated_at->format('Y.n.j') }}</span></p>
-            <p class="mb-0 d-flex align-items-center">関連するソリューション：<span class="fst-italic">{{ $done_milestones->find($_GET['milestone'])->solution->content }}</span></p>
+            <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_milestones[$_GET['milestone']]->updated_at->format('Y.n.j') }}</span></p>
+            <p class="mb-0 d-flex align-items-center">関連するソリューション：<span class="fst-italic">{{ $done_milestones[$_GET['milestone']]->solution->content }}</span></p>
         </div>
         @endif
     </div>

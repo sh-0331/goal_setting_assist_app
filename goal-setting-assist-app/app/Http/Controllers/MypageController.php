@@ -36,15 +36,29 @@ class MypageController extends Controller
 
         //Goalの中でdoneが1のものを取得する
         $goals = Goal::where('user_id', $user->id)->get();
-        $done_goals = $goals->where('done', '1');
+        $done_goals = array();
         foreach($goals as $goal){
-            // Solutionの中でdoneが1のものを取得する
-            $solutions = Solution::where('goals_id', $goal->id)->get();
-            $done_solutions = $solutions->where('done', '1');
-            foreach($solutions as $solution){
-                // milestoneの中でdoneが1のものを取得する
-                $milestones = Milestone::where('solution_id', $solution->id)->get();
-                $done_milestones = $milestones->where('done', '1');
+            if($goal->done == '1'){
+                $done_goals[] = $goal;
+            }
+        }
+        // Solutionの中でdoneが1のものを取得する
+        $done_solutions = array();
+        foreach($goals as $goal){
+            foreach($goal->solutions as $solution){
+                $solutions[] = $solution;
+                if($solution->done == '1'){
+                    $done_solutions[] = $solution;
+                }
+            }
+        }
+        // Milestoneの中でdoneが1のものを取得する
+        $done_milestones = array();
+        foreach($solutions as $solution){
+            foreach($solution->milestones as $milestone){
+                if($milestone->done == '1'){
+                    $done_milestones[] = $milestone;
+                }
             }
         }
 
@@ -54,52 +68,47 @@ class MypageController extends Controller
     public function active(Request $request)
     {
         // アーカイブした項目をアクティブに戻す
-        // doneを'0'にする
         $flash_message = "";
+        // Goalをアクティブにする
         if($request->input('active_item') == 'goal'){
             $goal_id = $request->input('goal_id');
             $archive_goal = Goal::find($goal_id);
             $archive_goal->done = '0';
             $archive_goal->save();
             $flash_message = "Goalをアクティブにしました。";
+            // Solutionをアクティブにする
         } elseif($request->input('active_item') == 'solution'){
             $solution_id = $request->input('solution_id');
             $archive_solution = Solution::find($solution_id);
             $archive_solution->done = '0';
             $archive_solution->save();
-            // もし関連するGoalがアーカイブされていたらアクティブにする
+            // 関連するGoalがアーカイブされていたらアクティブにする
             $rel_goal = $archive_solution->goal;
             if($rel_goal->done == '1'){
                 $rel_goal->done = '0';
                 $rel_goal->save();
             }
             $flash_message = "Solutionをアクティブにしました。";
+            // Milestoneをアクティブにする
         } elseif($request->input('active_item') == 'milestone'){
-            // dd(true);
             $milestone_id = $request->input('milestone_id');
-            // dd($milestone_id);
             $archive_milestone = Milestone::find($milestone_id);
-            // dd($archive_milestone);
             $archive_milestone->done = '0';
-            // dd($archive_milestone);
             $archive_milestone->save();
-            // もし関連するSolutionがアーカイブされていたらアクティブにする
+            // 関連するSolutionがアーカイブされていたらアクティブにする
             $rel_solution = $archive_milestone->solution;
             if($rel_solution->done == '1'){
                 $rel_solution->done = '0';
-                // dd($rel_solution);
                 $rel_solution->save();
             }
-            // もし関連するGoalがアーカイブされていたらアクティブにする
+            // 関連するGoalがアーカイブされていたらアクティブにする
             $rel_goal = $rel_solution->goal;
             if($rel_goal->done == '1'){
                 $rel_goal->done = '0';
-                // dd($rel_goal);
                 $rel_goal->save();
             }
             $flash_message = "Milestoneをアクティブにしました。";
         }
-        // dd(false);
         return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
     }
 
