@@ -91,28 +91,23 @@ class GoalSolutionController extends Controller
      */
     public function update(Request $request, Goal $goal, Solution $solution)
     {
-        // dd($request->input('done'));
         if($request->input('done') != NULL ){
             $solution->done = $request->input('done');
             // Solutionに紐付くマイルストーンも完了させる
-            $milestones = $solution->milestones()->where('done', '0')->get();
-            // dd($milestones);
+            $milestones = $solution->milestones->where('done', '0')->get();
             foreach($milestones as $milestone){
-                // dd($milestone);
                 $milestone->done = '1';
                 $milestone->save();
-                // dd($milestone->done);
             }
             $flash_message = "解決策をアーカイブしました。";
         } elseif($request->input('content') != NULL){
             $solution->content = $request->input('content');
-            $solution->date = $request->input('eval');
+            $solution->eval = $request->input('eval');
             $flash_message = "解決策の更新が完了しました。";
         }
         $solution->save();
-        // dd($solution);
 
-        return redirect()->route('goals.show', compact('goal'))->with('flash_message', "{$flash_message}");
+        return redirect()->route('goals.solutions.show', compact('goal', 'solution'))->with('flash_message', "{$flash_message}");
     }
 
     /**
