@@ -43,6 +43,7 @@ class MypageController extends Controller
             }
         }
         // Solutionの中でdoneが1のものを取得する
+        $solutions = array();
         $done_solutions = array();
         foreach($goals as $goal){
             foreach($goal->solutions as $solution){

@@ -17,14 +17,15 @@ class GoalController extends Controller
     public function index()
     {
         $goals = Auth::user()->goals;
-        $progress = array();
+        $total_dates = array();
+        $pers = array();
         foreach($goals as $goal) {
             foreach ($goal->solutions as $solution) {
                 $milestones = $solution->milestones;
                 $solution_id = $solution->id;
                 $total_date = $milestones->where('done', '0')->pluck('date')->sum();
                 $total_dates[$solution_id] = $total_date;
-                // マイルストーンの総数
+                // マイルストーンの進捗
                 $total_count = count($milestones);
                 $done_count = count($milestones->where('done', '1'));
                 if($total_count != 0) {
@@ -33,10 +34,8 @@ class GoalController extends Controller
                     $per = 0;
                 }
                 $pers[$solution_id] = $per;
-                // dd($solution_id);
             }
         }
-        // dd($pers);
         return view('goals.index', compact("goals", "total_dates", "pers"));
     }
 
