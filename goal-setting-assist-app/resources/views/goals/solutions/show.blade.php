@@ -34,8 +34,10 @@
                 </div>
 
                 <!-- 解決策の定量化用Modal -->
+                @if($solution->measurable != NULL)
                 @include('modals.edit_quantify_solution')
-                
+                @endif
+            
                 <div class="mb-0 align-self-center">
                     <div class="dropdown">
                         <a href="#" class="px-1 fs-3 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
