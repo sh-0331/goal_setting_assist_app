@@ -18,8 +18,8 @@
             <div class="d-flex flex-column">
                 @foreach($done_goals as $goal)
                 <div class="d-flex">
-                    <div><span class="fw-bold">・</span>{{ $goal->updated_at }}</div>
-                    <div><a class="ms-2 link-dark" href="{{$goal->goal_content}}">{{ $goal->goal_content }}</a></div>
+                    <div><span class="fw-bold">・</span>{{ $goal->updated_at->format('Y.n.j') }}</div>
+                    <div><a class="ms-2 link-dark" href="?goal={{$goal->id}}">{{ $goal->goal_content }}</a></div>
                 </div>
                 @endforeach
             </div>
@@ -31,7 +31,7 @@
             <div class="d-flex flex-column">
                 @foreach($done_solutions as $solution)
                 <div class="d-flex">
-                    <div><span class="fw-bold">・</span>{{ $solution->updated_at }}</div>
+                    <div><span class="fw-bold">・</span>{{ $solution->updated_at->format('Y.n.j') }}</div>
                     <div><a class="ms-2 link-dark" href="?solution={{$solution->id}}">{{ $solution->content }}</a></div>
                 </div>
                 @endforeach
@@ -52,14 +52,14 @@
         </div>
     </div>
 
-    <!-- もしゴールidをgetしたら -->
+    <!-- idをgetしたら -->
     <div class="container">
         <h2 class="mt-3 mb-3 text-center">詳細</h2>
         <hr>
         @if($_GET != NULL && isset($_GET['goal']))
         <div class="container border mb-1">
             <div class="d-flex">
-                <p class="flex-fill fs-4 mb-0">{{ $done_goals->find($_GET['goal'])->content }}</p>
+                <p class="flex-fill fs-4 mb-0">{{ $done_goals->find($_GET['goal'])->goal_content }}</p>
                 <div class="dropdown">
                     <a href="#" class="fs-4 link-dark text-decoration-none" id="dropdownArchiveMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">≡</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownArchiveMenuLink">
@@ -69,6 +69,11 @@
                 </div>
             </div>
             <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_goals->find($_GET['goal'])->updated_at->format('Y.n.j') }}</span></p>
+            <p class="mb-0 d-flex align-items-center">ゴールのメリット：<span class="fst-italic">{{ $done_goals->find($_GET['goal'])->merit }}</span></p>
+            <p class="mb-0 d-flex align-items-center">スタート：<span class="fst-italic">{{ $done_goals->find($_GET['goal'])->start_content }}</span></p>
+            @foreach($done_solutions->where('goals_id', $_GET['goal']) as $solution)
+            <p class="mb-0 d-flex align-items-center">関連するソリューション：<span class="fst-italic">{{ $solution->content }}</span></p>
+            @endforeach
         </div>
         @endif
 
@@ -85,9 +90,9 @@
                 </div>
             </div>
             <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_solutions->find($_GET['solution'])->updated_at->format('Y.n.j') }}</span></p>
-            <p class="mb-0 d-flex align-items-center">goal：<span class="fst-italic">{{ $done_solutions->find($_GET['solution'])->goal->content }}</span></p>
+            <p class="mb-0 d-flex align-items-center">関連するゴール：<span class="fst-italic">{{ $done_solutions->find($_GET['solution'])->goal->goal_content }}</span></p>
             @foreach($done_milestones->where('solution_id', $_GET['solution']) as $milestone)
-            <p class="mb-0 d-flex align-items-center">milestone：<span class="fst-italic">{{ $milestone->content }}</span></p>
+            <p class="mb-0 d-flex align-items-center">関連するマイルストーン：<span class="fst-italic">{{ $milestone->content }}</span></p>
             @endforeach
         </div>
         @endif
@@ -105,7 +110,7 @@
                 </div>
             </div>
             <p class="mb-0 d-flex align-items-center">完了日：<span class="fst-italic">{{ $done_milestones->find($_GET['milestone'])->updated_at->format('Y.n.j') }}</span></p>
-            <p class="mb-0 d-flex align-items-center">solution：<span class="fst-italic">{{ $done_milestones->find($_GET['milestone'])->solution->content }}</span></p>
+            <p class="mb-0 d-flex align-items-center">関連するソリューション：<span class="fst-italic">{{ $done_milestones->find($_GET['milestone'])->solution->content }}</span></p>
         </div>
         @endif
     </div>

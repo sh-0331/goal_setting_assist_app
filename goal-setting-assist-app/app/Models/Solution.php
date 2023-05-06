@@ -9,7 +9,7 @@ class Solution extends Model
 {
     use HasFactory;
     public function goal() {
-        return $this->belongsTo(Goal::class);
+        return $this->belongsTo(Goal::class, 'goals_id');
     }
     public function measurable() {
         return $this->hasOne(Measurable::class);
