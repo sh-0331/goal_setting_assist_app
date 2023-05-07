@@ -104,11 +104,11 @@
                 </div>
             </a>
             <!-- マイルストーン並び替え -->
-            <a href="#" class="link-dark" data-bs-toggle="modal" data-bs-target="#sortMilestoneModal">
+            <!-- <a href="#" class="link-dark" data-bs-toggle="modal" data-bs-target="#sortMilestoneModal">
                 <div class="d-flex justify-content-end">
                     <p class="fs-6"><span class="fw-bold"><i class="fa-solid fa-sort"></i></span>&nbsp;マイルストーンの並び替え</p>
                 </div>
-            </a>
+            </a> -->
             @endif
         </div>
 
