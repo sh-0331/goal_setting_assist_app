@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <!-- idをgetしたら -->
+    <!-- 各アイテムの詳細表示 -->
     <div class="container">
         <h2 class="mt-3 mb-3 text-center">詳細</h2>
         <hr>
@@ -79,7 +79,15 @@
                                 <button type="submit" class="dropdown-item" name="active">アクティブ</button>
                             </form>
                         </li>
-                        <li><a href="" class="dropdown-item text-danger">削除</a></li>
+                        <li>
+                            <form action="{{ route('mypage.destroy') }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="delete_item" value="goal">
+                                <input type="hidden" name="goal_id" value="{{ $done_goals[$_GET['goal']]->id }}">
+                                <button type="submit" class="dropdown-item text-danger" name="delete">削除</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -108,7 +116,15 @@
                                 <button type="submit" class="dropdown-item" name="active">アクティブ</button>
                             </form>
                         </li>
-                        <li><a href="" class="dropdown-item text-danger">削除</a></li>
+                        <li>
+                            <form action="{{ route('mypage.destroy') }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="delete_item" value="solution">
+                                <input type="hidden" name="solution_id" value="{{ $done_solutions[$_GET['solution']]->id }}">
+                                <button type="submit" class="dropdown-item text-danger" name="delete">削除</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -136,7 +152,15 @@
                                 <button type="submit" class="dropdown-item" name="active">アクティブ</button>
                             </form>
                         </li>
-                        <li><a href="" class="dropdown-item text-danger">削除</a></li>
+                        <li>
+                            <form action="{{ route('mypage.destroy') }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="delete_item" value="milestone">
+                                <input type="hidden" name="milestone_id" value="{{ $done_milestones[$_GET['milestone']]->id }}">
+                                <button type="submit" class="dropdown-item text-danger" name="delete">削除</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>

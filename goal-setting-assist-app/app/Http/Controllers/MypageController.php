@@ -113,7 +113,29 @@ class MypageController extends Controller
         return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
     }
 
-    public function destroy(){
+    public function destroy(Request $request){
         // アーカイブした項目を完全に削除する
+        $flash_message = "";
+        if($request->input('delete_item') == 'goal'){
+            // Goalを削除する
+            $goal_id = $request->input('goal_id');
+            $goal = Goal::find($goal_id);
+            $goal->delete();
+            $flash_message = "Goalを完全に削除しました。";
+        } elseif($request->input('delete_item') == 'solution'){
+            // Solutionを削除する
+            $solution_id = $request->input('solution_id');
+            $solution = Solution::find($solution_id);
+            $solution->delete();
+            $flash_message = "Solutionを完全に削除しました。";
+        } elseif($request->input('delete_item') == 'milestone'){
+            // Milestoneを削除する
+            $milestone_id = $request->input('milestone_id');
+            $milestone = Milestone::find($milestone_id);
+            $milestone->delete();
+            $flash_message = "Milestoneを完全に削除しました。";
+        }
+
+        return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
     }
 }
