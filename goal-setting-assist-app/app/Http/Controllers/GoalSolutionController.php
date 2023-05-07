@@ -42,16 +42,12 @@ class GoalSolutionController extends Controller
         $milestones = Milestone::where('solution_id', $solution->id)->get();
         // マイルストーンが存在する場合
         if(isset($milestones[0])){
-            // dd($milestones);
             // 未完了のマイルストーンを取得する
             $active_milestone = $milestones->where('done', '0');
-            // dd(empty($active_milestone));
             if(empty($active_milestone)){
                 // 未完了の中でrankが最大の更新日付を取得
                 $max_rank = $active_milestone->max('rank');
-                // dd($max_rank);
                 $latest = $milestones->where('rank', $max_rank)->first();
-                // dd($latest);
                 $latest_date = new DateTime($latest->updated_at);
                 // 今日の日付を取得
                 $today = new DateTime('now');
@@ -62,10 +58,8 @@ class GoalSolutionController extends Controller
                 $latest->date = $latest->date - $diff_day;
                 $latest->save();
             }
-
             // 未完了の最終的なdateの合計値を返す
             $total_date = $active_milestone->pluck('date')->sum();
-            // dd($total_date);
         }
 
         return view('goals.solutions.show', compact('goal', 'solution', 'milestones', 'total_date'));
@@ -94,10 +88,11 @@ class GoalSolutionController extends Controller
         if($request->input('done') != NULL ){
             $solution->done = $request->input('done');
             // Solutionに紐付くマイルストーンも完了させる
-            $milestones = $solution->milestones->where('done', '0')->get();
-            foreach($milestones as $milestone){
-                $milestone->done = '1';
-                $milestone->save();
+            foreach($solution->milestones as $milestone){
+                if($milestone->done != '1'){
+                    $milestone->done = '1';
+                    $milestone->save();
+                }
             }
             $flash_message = "解決策をアーカイブしました。";
         } elseif($request->input('content') != NULL){

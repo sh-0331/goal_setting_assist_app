@@ -101,17 +101,21 @@ class GoalController extends Controller
      */
     public function update(Request $request, Goal $goal)
     {
-        // dd($request->input('done'));
         if($request->input('done') != NULL ){
             $goal->done = $request->input('done');
             // Goalに紐付くSolutionも完了させる
-            $solutions = $goal->solutions()->where('done', '0')->get();
-            // dd($solutions);
-            foreach($solutions as $solution){
-                // dd($milestone);
-                $solution->done = '1';
-                $solution->save();
-                // dd($milestone->done);
+            foreach($goal->solutions as $solution){
+                if($solution->done != '1'){
+                    $solution->done = '1';
+                    $solution->save();
+                }
+                // Goal-Solutionに紐付くMilestoneも完了させる
+                foreach($solution->milestones as $milestone){
+                    if($milestone->done != '1'){
+                        $milestone->done ='1';
+                        $milestone->save();
+                    }
+                }
             }
             $flash_message = "Goalをアーカイブしました。";
         } elseif($request->input('goal_content') != NULL){
@@ -123,7 +127,6 @@ class GoalController extends Controller
             $flash_message = "Goalの更新が完了しました。";
         }
         $goal->save();
-        // dd($solution);
 
         return redirect()->route('goals.index')->with('flash_message', "{$flash_message}");
     }
