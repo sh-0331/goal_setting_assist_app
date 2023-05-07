@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <!-- 解決策の入力 -->
                     <label for="solution_content" class="form-label">解決策を入力してください。</label>
-                    <input type="text" class="form-control" id="solution_content" name="content">
+                    <input type="text" class="form-control" id="solution_content" name="content" required>
                     <!-- 解決策の評価 -->
                     <label for="solution_eval" class="form-label">解決策を5段階で評価してみましょう。</label>
                     <select class="form-select" id="solution_eval" name="eval">

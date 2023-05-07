@@ -32,12 +32,12 @@
                     <!-- 目的の詳細を記述 -->
                     <div class="mb-3">
                         <label for="goal_content" class="form-label">2. 目的(Goal)を記述してください。</label>
-                        <textarea name="goal_content" id="goal_content" rows="3" class="form-control"></textarea>
+                        <textarea name="goal_content" id="goal_content" rows="3" class="form-control" required></textarea>
                     </div>
                     <!-- 目的のメリット -->
                     <div class="mb-3">
                         <label for="merit" class="form-label">3. 目的を達成すると自分にどんなメリットがありますか？</label>
-                        <textarea name="merit" id="merit" rows="3" class="form-control"></textarea>
+                        <textarea name="merit" id="merit" rows="3" class="form-control" required></textarea>
                         <!-- メリット評価 -->
                         <label for="goal_eval" class="form-label">メリットを5段階で評価してみましょう。</label>
                         <select class="form-select" id="goal_eval" name="eval">
@@ -50,7 +50,7 @@
                     <div class="mb-3">
                         <label for="start_content" class="form-label">4. 目的に対して現在の状態(Start)を記述してください。</label>
                         <p>例）できていないこと、足りていないところ、問題点　など</p>
-                        <textarea name="start_content" id="start_content" rows="3" class="form-control"></textarea>
+                        <textarea name="start_content" id="start_content" rows="3" class="form-control" required></textarea>
                     </div>
                     <!-- 登録ボタン -->
                     <div class="d-flex flex-row-reverse mt-1">

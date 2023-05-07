@@ -22,13 +22,13 @@
             @method('PUT')
             <!-- 解決策の入力 -->
             <label for="solution_content" class="form-label">解決策を編集してください。</label>
-            <input type="text" class="form-control" id="solution_content" name="content" value="{{ $solution->content }}">
+            <input type="text" class="form-control" id="solution_content" name="content" value="{{ $solution->content }}" required>
             <br>
             <!-- 解決策の評価 -->
             <label for="solution_eval" class="form-label">解決策を5段階で評価してみましょう。</label>
             <select class="form-select" id="solution_eval" name="eval">
                 @for($i=5; $i>=1; $i-=1)
-                <option value="{{ $i }}" @if($solution->eval == $i) selected @endif>{{ $i }}</option>
+                <option value="{{ $i }}" @selected($solution->eval == $i)>{{ $i }}</option>
                 @endfor
             </select>
 
