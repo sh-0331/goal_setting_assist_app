@@ -8,6 +8,7 @@ use App\Models\Solution;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class MypageController extends Controller
 {
@@ -140,5 +141,31 @@ class MypageController extends Controller
         }
 
         return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
+    }
+    
+    public function edit_password()
+    {
+
+        $user = Auth::user();
+
+        return view('mypage.edit_password', compact('user'));
+    }
+
+    public function update_password(Request $request)
+    {
+        $validatedData = $request->validate([ 
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if($request->input('password') == $request->input('password_confirmation')){
+            $user->password = bcrypt($request->input('password'));
+            $user->update();
+        } else {
+            return to_route('mypage.edit_password')->with('flash_message', '同じパスワードを入力してください。');
+        }
+
+        return redirect()->route('mypage.index')->with('flash_message', "パスワードの更新が完了しました。");
     }
 }

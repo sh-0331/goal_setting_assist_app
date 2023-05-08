@@ -26,18 +26,15 @@
                     <label for="email" class="form-label">メールアドレス</label>
                     <input type="email" id="email" name="email" class="form-control" value="{{$user->email}}" required>
                 </div>
-                <!-- パスワード -->
-                <!-- <input type="hidden" name="password" value="{{$user->password}}"> -->
-                <!-- <div class="form-group">
-                    <label for="password" class="form-label">パスワード</label>
-                    <input type="text" id="password" name="password" class="form-control" required>
-                </div> -->
 
                 <hr>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary mt-3 w-25" name="register">保存</button>
                 </div>
             </form>
+            <div class="d-flex justify-content-start">
+                <a href="{{ route('mypage.edit_password') }}">パスワードの変更はこちら</a>
+            </div>
         </div>
     </div>
 </div>

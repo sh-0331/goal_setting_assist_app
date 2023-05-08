@@ -51,4 +51,6 @@ Route::controller(MypageController::class)->group(function(){
     Route::get('/mypage/archive', 'show_archive')->name('mypage.show_archive')->middleware('auth');
     Route::put('/mypage/archive', 'active')->name('mypage.active')->middleware('auth');
     Route::delete('/mypage/archive', 'destroy')->name('mypage.destroy')->middleware('auth');
+    Route::get('/mypage/edit_password', 'edit_password')->name('mypage.edit_password');
+    Route::put('/mypage/edit_password', 'update_password')->name('mypage.update_password');
 });
