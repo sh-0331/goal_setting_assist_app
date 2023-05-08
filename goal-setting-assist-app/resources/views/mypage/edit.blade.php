@@ -27,7 +27,7 @@
                     <input type="email" id="email" name="email" class="form-control" value="{{$user->email}}" required>
                 </div>
                 <!-- パスワード -->
-                <input type="hidden" name="password" value="{{$user->password}}">
+                <!-- <input type="hidden" name="password" value="{{$user->password}}"> -->
                 <!-- <div class="form-group">
                     <label for="password" class="form-label">パスワード</label>
                     <input type="text" id="password" name="password" class="form-control" required>

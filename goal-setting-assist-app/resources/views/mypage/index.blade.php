@@ -12,7 +12,7 @@
 
         <hr>
         <!-- ユーザー情報 -->
-        <!-- <div class="container">
+        <div class="container">
             <div class="d-flex justify-content-between">
                 <div class="row">
                     <div class="col-2 d-flex align-items-center">
@@ -29,7 +29,7 @@
                     <a href="{{ route('mypage.edit') }}"><i class="fas fa-chevron-right fa-2x"></i></a>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <hr>
         <!-- アーカイブ情報 -->

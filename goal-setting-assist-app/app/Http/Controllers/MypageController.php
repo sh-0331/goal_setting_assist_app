@@ -26,8 +26,11 @@ class MypageController extends Controller
     public function update(Request $request, User $user)
     {
         // ユーザー情報更新
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->update();
 
-        return redirect()->route('mypgae.index');
+        return redirect()->route('mypage.index');
     }
 
     public function show_archive()

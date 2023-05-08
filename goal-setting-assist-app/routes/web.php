@@ -31,18 +31,24 @@ Route::resource('/goals', GoalController::class)->middleware('auth');
 Route::resource('goals.solutions', GoalSolutionController::class)->only(['store', 'show', 'edit', 'update', 'destroy'])->middleware('auth');
 
 // MeasurableのCRUDルーティング
-Route::post('goals/{goal}/solutions/{solution}/measurable', [GoalSolutionController::class, 'measurable_store'])->name('measurable.store')->middleware('auth');
-Route::put('goals/{goal}/solutions/{solution}/measurable/{measurable}', [GoalSolutionController::class, 'measurable_update'])->name('measurable.update')->middleware('auth');
+Route::controller(GoalSolutionController::class)->group(function(){
+    Route::post('goals/{goal}/solutions/{solution}/measurable', 'measurable_store')->name('measurable.store')->middleware('auth');
+    Route::put('goals/{goal}/solutions/{solution}/measurable/{measurable}', 'measurable_update')->name('measurable.update')->middleware('auth');
+});
 
 // MilestoneのCRUDルーティング
-Route::post('goals/{goal}/solutions/{solution}/milestone', [GoalSolutionMilestoneController::class, 'store'])->name('milestones.store')->middleware('auth');
-Route::put('goals/{goal}/solutions/{solution}/milestone/{milestone}', [GoalSolutionMilestoneController::class, 'update'])->name('milestones.update')->middleware('auth');
-Route::delete('goals/{goal}/solutions/{solution}/milestone/{milestone}', [GoalSolutionMilestoneController::class, 'destroy'])->name('milestones.destroy')->middleware('auth');
+Route::controller(GoalSolutionMilestoneController::class)->group(function(){
+    Route::post('goals/{goal}/solutions/{solution}/milestone', 'store')->name('milestones.store')->middleware('auth');
+    Route::put('goals/{goal}/solutions/{solution}/milestone/{milestone}', 'update')->name('milestones.update')->middleware('auth');
+    Route::delete('goals/{goal}/solutions/{solution}/milestone/{milestone}', 'destroy')->name('milestones.destroy')->middleware('auth');
+});
 
 // Mypageのルーティング
-Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index')->middleware('auth');
-Route::get('/mypage/edit', [MypageController::class, 'edit'])->name('mypage.edit')->middleware('auth');
-Route::put('/mypage/edit', [MypageController::class, 'update'])->name('mypage.update')->middleware('auth');
-Route::get('/mypage/archive', [MypageController::class, 'show_archive'])->name('mypage.show_archive')->middleware('auth');
-Route::put('/mypage/archive', [MypageController::class, 'active'])->name('mypage.active')->middleware('auth');
-Route::delete('/mypage/archive', [MypageController::class, 'destroy'])->name('mypage.destroy')->middleware('auth');
+Route::controller(MypageController::class)->group(function(){
+    Route::get('/mypage', 'index')->name('mypage.index')->middleware('auth');
+    Route::get('/mypage/edit', 'edit')->name('mypage.edit')->middleware('auth');
+    Route::put('/mypage/edit/{user}', 'update')->name('mypage.update')->middleware('auth');
+    Route::get('/mypage/archive', 'show_archive')->name('mypage.show_archive')->middleware('auth');
+    Route::put('/mypage/archive', 'active')->name('mypage.active')->middleware('auth');
+    Route::delete('/mypage/archive', 'destroy')->name('mypage.destroy')->middleware('auth');
+});
