@@ -30,26 +30,10 @@
                     </li>
                     @endif
                     @else
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
+                    <li class="nav-item mr-5">
+                        <a href="{{ route('mypage.index') }}" class="dropdown-item">
+                            <i class="fas fa-user mr-1"></i><label>My page : {{ Auth::user()->name }}</label>
                         </a>
-
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li>
-                                <!-- <a href="../users/mypage.html" class="m-0 text-decoration-none">My page</a> -->
-                                <a href="{{ route('mypage.index') }}" class="dropdown-item">My page</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
                     </li>
                     @endguest
                 </ul>

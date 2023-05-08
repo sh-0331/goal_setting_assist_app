@@ -30,7 +30,7 @@ class MypageController extends Controller
         $user->email = $request->input('email');
         $user->update();
 
-        return redirect()->route('mypage.index');
+        return redirect()->route('mypage.index')->with('flash_message', "ユーザー情報の更新が完了しました。");
     }
 
     public function show_archive()

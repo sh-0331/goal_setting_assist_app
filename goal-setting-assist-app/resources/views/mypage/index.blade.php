@@ -6,6 +6,12 @@
     <div>&gt;My page</div>
 </div>
 
+@if(session('flash_message'))
+    <div class="flash_message bg-success text-center py-3 mb-1">
+        {{ session('flash_message') }}
+    </div>
+@endif
+
 <div class="container d-flex justify-content-center mt-3">
     <div class="w-50">
         <h1>マイページ</h1>
@@ -51,7 +57,35 @@
                 </div>
             </div>
         </div>
+
+        <hr>
+        <!-- ログアウト -->
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <div class="row">
+                    <div class="col-2 d-flex align-items-center">
+                        <i class="fas fa-sign-out-alt fa-3x"></i>
+                    </div>
+                    <div class="col-9 d-flex align-items-center ms-2 mt-3">
+                        <div class="d-flex flex-column">
+                            <label for="user-name">ログアウト</label>
+                            <p>ログアウトします</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fas fa-chevron-right fa-2x"></i>
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
-<script src="https://kit.fontawesome.com/8b5d46c961.js" crossorigin="anonymous"></script>
 @endsection
