@@ -31,3 +31,56 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+
+// let milestones = document.querySelectorAll('.milestone');
+let dragged = null;
+let target = null;
+// milestones.forEach(function() {
+
+// ドラッグ開始
+document.addEventListener("dragstart", function(event) {
+    dragged = event.target;
+    milestoneChange();
+});
+
+// ドラッグを開始したら起動
+const milestoneChange = function() {
+    document.addEventListener("dragover", function(event) {
+        event.preventDefault();
+    });
+
+    document.addEventListener("drop", function(event) {
+        if(event.target.classList.contains('milestone')) {
+            target = event.target;
+            const parentTarget = target.parentNode.parentNode;
+            const parentDragged = dragged.parentNode.parentNode;
+            // 上から下へドラッグする場合
+            if(dragged.dataset.rank < target.dataset.rank) {
+                parentTarget.after(parentDragged);
+            // 下から上へドラッグする場合
+            } else {
+                parentTarget.before(parentDragged);
+            }
+
+            // フォーム送信アクションを実行する
+            const draggedId = dragged.dataset.id;
+            const draggedRank = dragged.dataset.rank;
+            const targetId = target.dataset.id
+            const targetRank = target.dataset.rank;
+            milestoneChangeForm(draggedId, draggedRank, targetId, targetRank);
+        }
+    });
+}
+
+// 並び替えフォームを送信する
+const milestoneChangeForm = function(draggedId, draggedRank, targetId, targetRank) {
+    document.getElementById('draggedId').value = draggedId;
+    document.getElementById('draggedRank').value = draggedRank;
+    document.getElementById('targetId').value = targetId;
+    document.getElementById('targetRank').value = targetRank;
+    // console.log(document.getElementById('draggedId').value);
+    // console.log(document.getElementById('targetId').value);
+
+    // 送信ボタンをクリックする
+    document.getElementById('milestone_btn').click();
+}

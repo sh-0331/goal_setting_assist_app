@@ -39,7 +39,11 @@ class GoalSolutionController extends Controller
     public function show(Goal $goal, Solution $solution)
     {
         $total_date = 0;
-        $milestones = Milestone::where('solution_id', $solution->id)->get();
+
+        // rank順にソートする
+        $milestones = Milestone::where('solution_id', $solution->id)->orderBy('rank')->get();
+        // dd($milestones);
+
         // マイルストーンが存在する場合
         if(isset($milestones[0])){
             // 未完了のマイルストーンを取得する
