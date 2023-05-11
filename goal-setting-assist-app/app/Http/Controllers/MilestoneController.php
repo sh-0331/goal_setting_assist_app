@@ -23,24 +23,29 @@ class MilestoneController extends Controller
 
         // 移動対象と移動先の間のマイルストーンを全て取得する
         $milestones = $solution->milestones;
-        // dd($milestones);
+
+        // 上から下へドラッグする場合
         if($dragged_rank < $target_rank ) {
-            $dragged_milestones = $milestones->whereBetween('rank', [$dragged_rank+1, $target_rank]);
+            $changed_milestones = $milestones->whereBetween('rank', [$dragged_rank+1, $target_rank]);
+            // 取得した間のrankを全て-1する
+            foreach($changed_milestones as $changed_milestone) {
+                $changed_milestone->rank--;
+                $changed_milestone->save();
+            }
+        // 下から上へドラッグする場合
         } else {
-            $dragged_milestones = $milestones->whereBetween('rank', [$target_rank+1, $dragged_rank]);
+            $changed_milestones = $milestones->whereBetween('rank', [$target_rank, $dragged_rank-1]);
+            // 取得した間のrankを全て+1する
+            foreach($changed_milestones as $changed_milestone) {
+                $changed_milestone->rank++;
+                $changed_milestone->save();
+            }
         }
-        // dd($dragged_milestones);
 
         // 移動したい項目のrankを移動先のrankへ変更する
         $dragged_milestone = $milestones->find($dragged_id);
         $dragged_milestone->rank = $target_rank;
         $dragged_milestone->save();
-        
-        // 間のrankを全て-1する
-        foreach($dragged_milestones as $target_milestone) {
-            $target_milestone->rank--;
-            $target_milestone->save();
-        }
 
         return to_route('solution.show', compact('goal', 'solution'));
 

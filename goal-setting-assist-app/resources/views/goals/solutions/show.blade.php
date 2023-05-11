@@ -112,7 +112,7 @@
                         <input type="hidden" id="draggedRank" name="draggedRank" value="">
                         <input type="hidden" id="targetId" name="targetId" value="">
                         <input type="hidden" id="targetRank" name="targetRank" value="">
-                        <button type="submit" id="milestone_btn" class="btn btn-primary">並び替えを完了</button>
+                        <button type="submit" id="milestone_btn" class="btn btn-primary" style="display: none;">並び替え完了</button>
                     </form>
                 </div>
             </div>
