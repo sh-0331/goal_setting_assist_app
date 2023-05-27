@@ -21,7 +21,6 @@ class GoalController extends Controller
         $goals = Auth::user()->goals;
 
         $milestone_progress = $this->cal_milestone_progress($goals);
-        // $pers = $this->cal_milestone_progress($goals);
         $total_dates = $milestone_progress['total_dates'];
         $pers = $milestone_progress['pers'];
         
@@ -67,7 +66,7 @@ class GoalController extends Controller
             // 未完了のマイルストーンを取得する
             $active_milestones = $milestones->where('done', '0');
 
-            if(!empty($active_milestones)){
+            if(isset($active_milestones[0])){
                 // 未完了の中で最大rankを持つカラムの更新日付を取得
                 $max_rank = $active_milestones->max('rank');
                 $latest = $milestones->where('rank', $max_rank)->first();
@@ -157,12 +156,6 @@ class GoalController extends Controller
      */
     public function update(Request $request, Goal $goal)
     {
-        $validated = $request->validate([
-            'goal_content' => 'required',
-            'merit' => 'required',
-            'start_content' => 'required'
-        ]);
-
         if($request->input('done') != NULL ){
             $goal->done = $request->input('done');
             // Goalに紐付くSolutionも完了させる
@@ -180,7 +173,13 @@ class GoalController extends Controller
                 }
             }
             $flash_message = "Goalをアーカイブしました。";
-        } elseif($request->input('goal_content') != NULL){
+        } else {
+            $validated = $request->validate([
+                'goal_content' => 'required',
+                'merit' => 'required',
+                'start_content' => 'required'
+            ]);
+
             $goal->classification = $request->input('classification');
             $goal->goal_content = $request->input('goal_content');
             $goal->merit = $request->input('merit');

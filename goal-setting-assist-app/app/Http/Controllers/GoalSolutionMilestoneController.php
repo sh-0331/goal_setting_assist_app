@@ -53,16 +53,15 @@ class GoalSolutionMilestoneController extends Controller
      */
     public function update(Request $request, Goal $goal, Solution $solution, Milestone $milestone)
     {
-        $validated = $request->validate([
-            'content' => 'required',
-            'date' => 'required | numeric'
-        ]);
-        
         if($request->input('done') != NULL ){
             $milestone->done = $request->input('done');
             $active_milestones = $solution->milestones()->where('done', '0')->touch();
             $flash_message = "マイルストーンをアーカイブしました。";
-        } elseif($request->input('content') != NULL){
+        } else {
+            $validated = $request->validate([
+                'content' => 'required',
+                'date' => 'required | numeric'
+            ]);
             $milestone->content = $request->input('content');
             $milestone->date = $request->input('date');
             $flash_message = "マイルストーンの更新が完了しました。";

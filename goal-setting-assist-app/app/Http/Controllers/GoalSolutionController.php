@@ -66,10 +66,6 @@ class GoalSolutionController extends Controller
      */
     public function update(Request $request, Goal $goal, Solution $solution)
     {
-        $validated = $request->validate([
-            'content' => 'required',
-        ]);
-
         if($request->input('done') != NULL ){
             $solution->done = $request->input('done');
             // Solutionに紐付くマイルストーンも完了させる
@@ -80,14 +76,17 @@ class GoalSolutionController extends Controller
                 }
             }
             $flash_message = "解決策をアーカイブしました。";
-        } elseif($request->input('content') != NULL){
+        } else {
+            $validated = $request->validate([
+                'content' => 'required',
+            ]);
             $solution->content = $request->input('content');
             $solution->eval = $request->input('eval');
             $flash_message = "解決策の更新が完了しました。";
         }
         $solution->save();
 
-        return redirect()->route('goals.solutions.show', compact('goal', 'solution'))->with('flash_message', "{$flash_message}");
+        return redirect()->route('goals.show', compact('goal'))->with('flash_message', "{$flash_message}");
     }
 
     /**
