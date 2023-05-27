@@ -18,6 +18,11 @@ class GoalSolutionMilestoneController extends Controller
      */
     public function store(Request $request, Goal $goal, Solution $solution)
     {
+        $validated = $request->validate([
+            'content' => 'required',
+            'date' => 'required | numeric'
+        ]);
+
         $milestone = new Milestone();
         $milestone->solution_id = $solution->id;
         $milestone->content = $request->input('content');
@@ -48,6 +53,11 @@ class GoalSolutionMilestoneController extends Controller
      */
     public function update(Request $request, Goal $goal, Solution $solution, Milestone $milestone)
     {
+        $validated = $request->validate([
+            'content' => 'required',
+            'date' => 'required | numeric'
+        ]);
+        
         if($request->input('done') != NULL ){
             $milestone->done = $request->input('done');
             $active_milestones = $solution->milestones()->where('done', '0')->touch();

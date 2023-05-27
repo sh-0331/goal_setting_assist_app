@@ -24,14 +24,41 @@ class MypageController extends Controller
         return view('mypage.edit', compact('user'));
     }
 
+    // nameとemail情報更新
     public function update(Request $request, User $user)
     {
-        // ユーザー情報更新
+        $validated = $request->validate([
+            'name' => 'required | string | max:255',
+            'email' => 'required | string | email:filter | max:255'
+        ]);
+
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->update();
 
         return redirect()->route('mypage.index')->with('flash_message', "ユーザー情報の更新が完了しました。");
+    }
+
+    public function edit_password()
+    {
+        $user = Auth::user();
+        return view('mypage.edit_password', compact('user'));
+    }
+
+    // password更新
+    public function update_password(Request $request)
+    {
+        $validated = $request->validate([
+            'password' => 'required | string | min:8 | confirmed',
+        ]);
+
+        $user = Auth::user();
+        if($request->input('password') == $request->input('password_confirmation')){
+            $user->password = bcrypt($request->input('password'));
+            $user->update();
+        }
+
+        return redirect()->route('mypage.index')->with('flash_message', "パスワードの更新が完了しました。");
     }
 
     public function show_archive()
@@ -141,31 +168,5 @@ class MypageController extends Controller
         }
 
         return redirect()->route('mypage.show_archive')->with('flash_message', "{$flash_message}");
-    }
-    
-    public function edit_password()
-    {
-
-        $user = Auth::user();
-
-        return view('mypage.edit_password', compact('user'));
-    }
-
-    public function update_password(Request $request)
-    {
-        $validatedData = $request->validate([ 
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $user = Auth::user();
-
-        if($request->input('password') == $request->input('password_confirmation')){
-            $user->password = bcrypt($request->input('password'));
-            $user->update();
-        } else {
-            return to_route('mypage.edit_password')->with('flash_message', '同じパスワードを入力してください。');
-        }
-
-        return redirect()->route('mypage.index')->with('flash_message', "パスワードの更新が完了しました。");
     }
 }

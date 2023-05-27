@@ -25,7 +25,7 @@
                 <!-- 新しいパスワード -->
                 <div class="form-group">
                     <label for="password" class="form-label">新しいパスワード</label>
-                    <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" required autocomplete="new-password" value="{{ old('password') }}">
+                    <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" value="{{ old('password') }}">
                     @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -35,7 +35,7 @@
                 <!-- 確認用パスワード -->
                 <div class="form-group">
                     <label for="password_confirm" class="form-label">確認用パスワード</label>
-                    <input type="password" id="password_confirm" name="password_confirmation" class="form-control" required autocomplete="new-password">
+                    <input type="password" id="password_confirm" name="password_confirmation" class="form-control" autocomplete="new-password">
                 </div>
 
                 <div class="d-flex justify-content-end">

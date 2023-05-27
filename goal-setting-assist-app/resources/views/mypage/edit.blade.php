@@ -19,12 +19,23 @@
                 <!-- 氏名 -->
                 <div class="form-group">
                     <label for="user_name" class="form-label">氏名</label>
-                    <input type="text" id="user_name" name="name" class="form-control" value="{{$user->name}}" required>
+                    <input type="text" id="user_name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{$user->name}}">
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                 </div>
+
                 <!-- メールアドレス -->
                 <div class="form-group">
                     <label for="email" class="form-label">メールアドレス</label>
-                    <input type="email" id="email" name="email" class="form-control" value="{{$user->email}}" required>
+                    <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{$user->email}}">
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                 </div>
 
                 <hr>

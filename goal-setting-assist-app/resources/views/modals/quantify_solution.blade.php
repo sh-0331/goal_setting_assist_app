@@ -13,11 +13,11 @@
                         解決策を定量化してみましょう。<br>
                         解決策の進捗を数値で表すならば、単位は何ですか？
                     </label>
-                    <input type="text" class="form-control" id="progress_unit" name="progress_unit" placeholder="単位" required>
+                    <input type="text" class="form-control" id="progress_unit" name="progress_unit" placeholder="単位" value="{{ old('progress_unit') }}">
                     <br>
                     <!-- 解決策の数量 -->
                     <label for="progress_value" class="form-label">その単位の目標数値を入力してください。</label>
-                    <input type="number" class="form-control" id="progress_value" name="progress_value" placeholder="数値" required>
+                    <input type="number" class="form-control" id="progress_value" name="progress_value" placeholder="数値" value="{{ old('progress_value') }}">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" name="create">登録</button>

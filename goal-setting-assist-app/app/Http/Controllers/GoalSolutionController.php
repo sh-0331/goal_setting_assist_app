@@ -18,8 +18,11 @@ class GoalSolutionController extends Controller
      */
     public function store(Request $request, $goal)
     {
+        $validated = $request->validate([
+            'content' => 'required',
+        ]);
+
         $solution = new Solution();
-        // dd($goal);
         $solution->goals_id = $goal;
         $solution->content = $request->input('content');
         $solution->eval = $request->input('eval');
@@ -63,6 +66,10 @@ class GoalSolutionController extends Controller
      */
     public function update(Request $request, Goal $goal, Solution $solution)
     {
+        $validated = $request->validate([
+            'content' => 'required',
+        ]);
+
         if($request->input('done') != NULL ){
             $solution->done = $request->input('done');
             // Solutionに紐付くマイルストーンも完了させる
@@ -98,6 +105,11 @@ class GoalSolutionController extends Controller
 
     public function measurable_store(Request $request, Goal $goal, Solution $solution)
     {
+        $validated = $request->validate([
+            'progress_unit' => 'required',
+            'progress_value' => 'required | numeric'
+        ]);
+
         $measurable = new Measurable();
         $measurable->solution_id = $solution->id;
         $measurable->progress_unit = $request->input('progress_unit');
@@ -109,6 +121,11 @@ class GoalSolutionController extends Controller
 
     public function measurable_update(Request $request, Goal $goal, Solution $solution, Measurable $measurable)
     {
+        $validated = $request->validate([
+            'progress_unit' => 'required',
+            'progress_value' => 'required | numeric'
+        ]);
+
         $measurable->progress_unit = $request->input('progress_unit');
         $measurable->progress_value = $request->input('progress_value');
         $measurable->save();

@@ -11,10 +11,10 @@
                 <div class="modal-body">
                     <!-- マイルストーンを数値入力 -->
                     <label for="edit_milestone_content" class="form-label">マイルストーンを入力してください。</label>
-                    <input type="text" class="form-control" id="edit_milestone_content" name="content" value="{{$milestone->content}}" required>
+                    <input type="text" class="form-control" id="edit_milestone_content" name="content" value="{{ old('content', $milestone->content) }}">
                     <!-- マイルストーンの期日を設定する -->
                     <label for="edit_milestone_date" class="form-label">マイルストーンは何日で完了できますか。</label>
-                    <input type="number" class="form-control" id="edit_milestone_date" name="date" placeholder="日" value="{{$milestone->date}}" min="1" max="100" required>
+                    <input type="number" class="form-control" id="edit_milestone_date" name="date" placeholder="日" value="{{ old('date', $milestone->date) }}" min="1" max="100">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" name="update">更新</button>

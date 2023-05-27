@@ -34,12 +34,23 @@
                     <!-- 目的の詳細を記述 -->
                     <div class="mb-3">
                         <label for="goal_content_edit" class="form-label">2. 目的(Goal)を記述してください。</label>
-                        <textarea name="goal_content" id="goal_content_edit" rows="3" class="form-control" required>{{ $goal->goal_content }}</textarea>
+                        <textarea name="goal_content" id="goal_content_edit" rows="3" class="form-control @error('goal_content') is-invalid @enderror">{{ old('goal_content', $goal->goal_content) }}</textarea>
+                        @error('goal_content')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
+
                     <!-- 目的のメリット -->
                     <div class="mb-3">
                         <label for="merit_edit" class="form-label">3. 目的を達成すると自分にどんなメリットがありますか？</label>
-                        <textarea name="merit" id="merit_edit" rows="3" class="form-control" required>{{ $goal->merit }}</textarea>
+                        <textarea name="merit" id="merit_edit" rows="3" class="form-control @error('merit') is-invalid @enderror">{{ old('merit', $goal->merit) }}</textarea>
+                        @error('merit')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                         <!-- メリット評価 -->
                         <label for="goal_eval_edit" class="form-label">メリットを5段階で評価してみましょう。</label>
                         <select class="form-select" id="goal_eval_edit" name="eval">
@@ -48,11 +59,17 @@
                             @endfor
                         </select>
                     </div>
+
                     <!-- 現状(Start)把握 -->
                     <div class="mb-3">
                         <label for="start_content_edit" class="form-label">4. 目的に対して現在の状態(Start)を記述してください。</label>
                         <p>例）できていないこと、足りていないところ、問題点　など</p>
-                        <textarea name="start_content" id="start_content_edit" rows="3" class="form-control" required>{{ $goal->start_content }}</textarea>
+                        <textarea name="start_content" id="start_content_edit" rows="3" class="form-control @error('start_content') is-invalid @enderror">{{ old('start_content', $goal->start_content) }}</textarea>
+                        @error('start_content')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <!-- 登録ボタン -->
                     <div class="d-flex flex-row-reverse mt-1">

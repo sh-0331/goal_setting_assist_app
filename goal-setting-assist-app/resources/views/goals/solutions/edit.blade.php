@@ -22,8 +22,14 @@
             @method('PUT')
             <!-- 解決策の入力 -->
             <label for="solution_content" class="form-label">解決策を編集してください。</label>
-            <input type="text" class="form-control" id="solution_content" name="content" value="{{ $solution->content }}" required>
+            <input type="text" class="form-control @error('content') is-invalid @enderror" id="solution_content" name="content" value="{{ old('content' ,$solution->content) }}">
+            @error('content')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
             <br>
+
             <!-- 解決策の評価 -->
             <label for="solution_eval" class="form-label">解決策を5段階で評価してみましょう。</label>
             <select class="form-select" id="solution_eval" name="eval">

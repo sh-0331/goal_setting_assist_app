@@ -10,6 +10,14 @@
     <div class="flash_message bg-success text-center py-3 mb-1">
         {{ session('flash_message') }}
     </div>
+@elseif ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif
 
 <div class="container">

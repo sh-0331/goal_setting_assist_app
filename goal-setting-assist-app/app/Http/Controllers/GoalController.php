@@ -107,6 +107,12 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'goal_content' => 'required',
+            'merit' => 'required',
+            'start_content' => 'required'
+        ]);
+
         $goal = new Goal();
         $goal->user_id = Auth::id();
         $goal->classification = $request->input('classification');
@@ -151,6 +157,12 @@ class GoalController extends Controller
      */
     public function update(Request $request, Goal $goal)
     {
+        $validated = $request->validate([
+            'goal_content' => 'required',
+            'merit' => 'required',
+            'start_content' => 'required'
+        ]);
+
         if($request->input('done') != NULL ){
             $goal->done = $request->input('done');
             // Goalに紐付くSolutionも完了させる
