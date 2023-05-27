@@ -35,7 +35,7 @@
 
                 <!-- 解決策の定量化用Modal -->
                 @if($solution->measurable != NULL)
-                @include('modals.edit_quantify_solution')
+                    @include('modals.edit_quantify_solution')
                 @endif
             
                 <div class="mb-0 align-self-center">
@@ -120,50 +120,48 @@
         </div>
 
         <div class="container border p-3">
-            <!-- 入れ換えできるようにしたい -->
-            @if($milestones != NULL)
-            @foreach($milestones as $milestone)
-            @if($milestone->done != '1')
-            <div class="change">
-                <p class="fs-1 text-center">↑</p>
-                <div class="d-flex">
-                    <div class="flex-fill border text-center pt-3 pb-3 bg-light milestone" data-id="{{ $milestone->id }}" data-rank="{{ $milestone->rank }}" draggable="true">{{ $milestone->content }}</div>
-    
-                    <!-- マイルストーン編集用モーダル -->
-                    @include('modals.edit_milestone')
-    
-                    <div class="mb-0 align-self-center">
-                        <div class="dropdown">
-                            <a href="#" class="px-1 fs-5 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
-                                <li>
-                                    <form action="{{ route('milestones.update', [$goal, $solution, $milestone]) }}" method="post">
-                                        @csrf
-                                        @method('PUT')
-                                        <!-- マイルストーン完了 -->
-                                        <input type="hidden" name="done" value="1">
-                                        <button type="submit" class="dropdown-item btn btn-link" name="milestone_done">完了</button>
-                                    </form>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editMilestoneModal{{ $milestone->id }}">編集</a>
-                                </li>
-                                <!-- マイルストーン削除 -->
-                                <li>
-                                    <form action="{{ route('milestones.destroy', [$goal, $solution, $milestone]) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger" name="delete">削除</a>
-                                    </form>
-                                </li>
-                            </ul>
+            <!-- 入れ換え可能 -->
+            @if($active_milestones != NULL)
+                @foreach($active_milestones as $milestone)
+                <div class="change">
+                    <p class="fs-1 text-center">↑</p>
+                    <div class="d-flex">
+                        <div class="flex-fill border text-center pt-3 pb-3 bg-light milestone" data-id="{{ $milestone->id }}" data-rank="{{ $milestone->rank }}" draggable="true">{{ $milestone->content }}</div>
+        
+                        <!-- マイルストーン編集用モーダル -->
+                        @include('modals.edit_milestone')
+        
+                        <div class="mb-0 align-self-center">
+                            <div class="dropdown">
+                                <a href="#" class="px-1 fs-5 fw-bold link-dark text-decoration-none" id="dropdownGoalMenuLink" data-bs-toggle="dropdown" role="button" aria-expanded="false">︙</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownGoalMenuLink">
+                                    <li>
+                                        <form action="{{ route('milestones.update', [$goal, $solution, $milestone]) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <!-- マイルストーン完了 -->
+                                            <input type="hidden" name="done" value="1">
+                                            <button type="submit" class="dropdown-item btn btn-link" name="milestone_done">完了</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editMilestoneModal{{ $milestone->id }}">編集</a>
+                                    </li>
+                                    <!-- マイルストーン削除 -->
+                                    <li>
+                                        <form action="{{ route('milestones.destroy', [$goal, $solution, $milestone]) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dropdown-item text-danger" name="delete">削除</a>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">{{ $milestone->date }}</span>日</p>
                 </div>
-                <p class="m-0"><span class="fw-bold">残り期間：</span><span class="text-danger">{{ $milestone->date }}</span>日</p>
-            </div>
-            @endif
-            @endforeach
+                @endforeach
             @endif
         </div>
 

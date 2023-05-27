@@ -6,6 +6,8 @@ use App\Models\Goal;
 use App\Models\Solution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class GoalController extends Controller
 {
@@ -17,15 +19,30 @@ class GoalController extends Controller
     public function index()
     {
         $goals = Auth::user()->goals;
+
+        $milestone_progress = $this->cal_milestone_progress($goals);
+        // $pers = $this->cal_milestone_progress($goals);
+        $total_dates = $milestone_progress['total_dates'];
+        $pers = $milestone_progress['pers'];
+        
+        return view('goals.index', compact("goals", "total_dates", "pers"));
+    }
+
+    // マイルストーンの進捗を計算
+    private function cal_milestone_progress($goals) {
         $total_dates = array();
         $pers = array();
+        
         foreach($goals as $goal) {
             foreach ($goal->solutions as $solution) {
                 $milestones = $solution->milestones;
                 $solution_id = $solution->id;
-                $total_date = $milestones->where('done', '0')->pluck('date')->sum();
+                
+                // マイルストーンの残日数を取得
+                $total_date = $this->total_date($solution);
                 $total_dates[$solution_id] = $total_date;
-                // マイルストーンの進捗
+
+                // もしマイルストーンが存在すれば（完了数/合計数）で進捗を計算
                 $total_count = count($milestones);
                 $done_count = count($milestones->where('done', '1'));
                 if($total_count != 0) {
@@ -36,7 +53,40 @@ class GoalController extends Controller
                 $pers[$solution_id] = $per;
             }
         }
-        return view('goals.index', compact("goals", "total_dates", "pers"));
+        return ['pers' => $pers, 'total_dates' => $total_dates];
+    }
+
+    // マイルストーンの残日数を更新
+    private function total_date($solution)
+    {
+        $milestones = $solution->milestones;
+        $total_date = 0;
+
+        // マイルストーンが存在する場合
+        if(isset($milestones[0])){
+            // 未完了のマイルストーンを取得する
+            $active_milestones = $milestones->where('done', '0');
+
+            if(!empty($active_milestones)){
+                // 未完了の中で最大rankを持つカラムの更新日付を取得
+                $max_rank = $active_milestones->max('rank');
+                $latest = $milestones->where('rank', $max_rank)->first();
+                $latest_date = new DateTime($latest->updated_at);
+
+                // 今日と更新日付の差を計算する
+                $today = new DateTime('now');
+                $diff = $latest_date->diff($today);
+                $diff_day = $diff->format('%a');
+
+                // 日にちの差をdateから引き、保存する
+                $latest->date = $latest->date - $diff_day;
+                $latest->save();
+            }
+            // 未完了の最終的なdateの合計値を返す
+            $total_date = $active_milestones->pluck('date')->sum();
+        }
+
+        return $total_date;
     }
 
     /**

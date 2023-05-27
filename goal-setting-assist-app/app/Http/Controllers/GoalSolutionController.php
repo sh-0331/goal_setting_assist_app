@@ -7,8 +7,6 @@ use App\Models\Measurable;
 use App\Models\Milestone;
 use App\Models\Solution;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use DateTime;
 
 class GoalSolutionController extends Controller
 {
@@ -38,35 +36,11 @@ class GoalSolutionController extends Controller
      */
     public function show(Goal $goal, Solution $solution)
     {
-        $total_date = 0;
-
         // rank順にソートする
         $milestones = Milestone::where('solution_id', $solution->id)->orderBy('rank')->get();
-        // dd($milestones);
-
-        // マイルストーンが存在する場合
-        if(isset($milestones[0])){
-            // 未完了のマイルストーンを取得する
-            $active_milestone = $milestones->where('done', '0');
-            if(empty($active_milestone)){
-                // 未完了の中でrankが最大の更新日付を取得
-                $max_rank = $active_milestone->max('rank');
-                $latest = $milestones->where('rank', $max_rank)->first();
-                $latest_date = new DateTime($latest->updated_at);
-                // 今日の日付を取得
-                $today = new DateTime('now');
-                // 今日と更新日付の日にち差を計算する
-                $diff = $latest_date->diff($today);
-                $diff_day = $diff->format('%a');
-                // 日にちの差をdateから引き、保存する
-                $latest->date = $latest->date - $diff_day;
-                $latest->save();
-            }
-            // 未完了の最終的なdateの合計値を返す
-            $total_date = $active_milestone->pluck('date')->sum();
-        }
-
-        return view('goals.solutions.show', compact('goal', 'solution', 'milestones', 'total_date'));
+        $active_milestones = $milestones->where('done', '0');
+        $total_date = $active_milestones->pluck('date')->sum();
+        return view('goals.solutions.show', compact('goal', 'solution', 'active_milestones', 'total_date'));
     }
 
     /**
