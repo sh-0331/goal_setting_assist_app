@@ -21,4 +21,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('milestone/change/{solution}', [MilestoneController::class, 'change'])->name('milestone.change');
-Route::get('goals/{goal}/solutions/{solution}/milestone', [GoalSolutionController::class, 'show'])->name('solution.show');

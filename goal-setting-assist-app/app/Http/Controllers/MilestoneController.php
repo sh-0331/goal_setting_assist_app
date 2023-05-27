@@ -47,7 +47,7 @@ class MilestoneController extends Controller
         $dragged_milestone->rank = $target_rank;
         $dragged_milestone->save();
 
-        return to_route('solution.show', compact('goal', 'solution'));
+        return to_route('goals.solutions.show', compact('goal', 'solution'));
 
     }
 }
