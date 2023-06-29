@@ -205,3 +205,5 @@ class GoalController extends Controller
         return redirect()->route('goals.index')->with('flash_message', "削除が完了しました。");
     }
 }
+
+// git push test for branch
